@@ -29,20 +29,20 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Fr
 .btn-blue{background:linear-gradient(180deg,#64B5F6,#1E88E5);color:#fff;}
 
 /* Visual select buttons (for kids) */
-.vbtn{border:3px solid rgba(255,255,255,.3);border-radius:16px;cursor:pointer;background:rgba(0,0,0,.3);padding:6px;display:flex;flex-direction:column;align-items:center;transition:all .15s;min-width:70px;}
+.vbtn{border:3px solid rgba(255,255,255,.3);border-radius:16px;cursor:pointer;background:rgba(0,0,0,.3);padding:8px 12px;display:flex;flex-direction:column;align-items:center;transition:all .15s;min-width:80px;}
 .vbtn.sel{border-color:#FFD700;background:rgba(255,215,0,.2);box-shadow:0 0 12px rgba(255,215,0,.5);}
-.vbtn-icon{font-size:28px;line-height:1;}
-.vbtn-lbl{font-size:10px;color:#ccc;margin-top:2px;}
+.vbtn-icon{font-size:36px;line-height:1;}
+.vbtn-lbl{font-size:13px;color:#ccc;margin-top:3px;font-weight:600;}
 
 /* Text */
 .t1{color:#FFD700;font-size:28px;text-shadow:0 0 20px rgba(255,215,0,.5),2px 2px 4px rgba(0,0,0,.8);margin:5px 0;text-align:center;}
 .t2{color:#E0E0E0;font-size:15px;text-shadow:1px 1px 3px rgba(0,0,0,.8);margin:3px 0;text-align:center;}
 .lbl{color:#FFD700;font-size:13px;text-shadow:1px 1px 2px rgba(0,0,0,.6);margin:6px 0 2px;text-transform:uppercase;letter-spacing:1px;}
 .row{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin:3px 0;}
-.cbtn{width:36px;height:36px;border-radius:50%;border:3px solid rgba(255,255,255,.3);cursor:pointer;transition:all .15s;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;}
+.cbtn{width:40px;height:40px;border-radius:50%;border:3px solid rgba(255,255,255,.3);cursor:pointer;transition:all .15s;min-height:40px;min-width:40px;display:flex;align-items:center;justify-content:center;}
 .cbtn.sel{border-color:#FFD700;box-shadow:0 0 10px #FFD700;transform:scale(1.2);}
-.sbtn{width:44px;height:44px;border-radius:10px;border:2px solid rgba(255,255,255,.3);cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.08);transition:all .15s;}
-.sbtn.sel{border-color:#FFD700;background:rgba(255,215,0,.25);box-shadow:0 0 8px rgba(255,215,0,.5);}
+.sbtn{width:56px;height:56px;border-radius:14px;border:3px solid rgba(255,255,255,.3);cursor:pointer;font-size:30px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.08);transition:all .15s;}
+.sbtn.sel{border-color:#FFD700;background:rgba(255,215,0,.25);box-shadow:0 0 12px rgba(255,215,0,.5);transform:scale(1.1);}
 
 /* HUD */
 #hud{position:absolute;top:0;left:0;width:100%;z-index:15;display:none;padding:10px 14px;padding-top:max(10px, env(safe-area-inset-top, 10px));padding-left:max(14px, env(safe-area-inset-left, 14px));padding-right:max(14px, env(safe-area-inset-right, 14px));background:linear-gradient(180deg,rgba(0,0,0,.6),transparent);pointer-events:none;}
@@ -72,28 +72,44 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Fr
 </div>
 </div>
 
-<!-- CUSTOMIZE -->
-<div id="s-custom" class="scr bg-dark">
-<div class="t1" style="font-size:20px;margin-top:5px">Build Your Kite!</div>
+<!-- CUSTOMIZE PAGE 1: Size + Colors -->
+<div id="s-custom1" class="scr bg-dark">
+<div style="display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:100%;width:100%;padding:4px 0;padding-top:max(4px, env(safe-area-inset-top, 4px));padding-bottom:max(4px, env(safe-area-inset-bottom, 4px));">
+<div class="t1" style="font-size:22px;margin:2px 0">Build Your Kite!</div>
 
-<canvas id="kite-preview" width="200" height="180"></canvas>
+<canvas id="kite-preview" width="180" height="140"></canvas>
 
-<div class="lbl">Kite Size</div>
-<div class="row" id="r-size"></div>
+<div class="lbl" style="margin:4px 0 2px">Kite Size</div>
+<div class="row" id="r-size" style="gap:10px;margin:2px 0"></div>
 
-<div class="lbl">Kite Color</div>
-<div class="row" id="r-kcol"></div>
+<div class="lbl" style="margin:4px 0 2px">Kite Color</div>
+<div class="row" id="r-kcol" style="gap:4px;margin:2px 0"></div>
 
-<div class="lbl">Tail Color</div>
-<div class="row" id="r-tcol"></div>
+<div class="lbl" style="margin:4px 0 2px">Tail Color</div>
+<div class="row" id="r-tcol" style="gap:4px;margin:2px 0"></div>
 
-<div class="lbl">Stickers (up to 3)</div>
-<div class="row" id="r-stk"></div>
+<button class="btn" style="font-size:20px;margin:6px 0" onclick="goCustomize2()">NEXT →</button>
+</div>
+</div>
 
-<div class="lbl">Wind</div>
-<div class="row" id="r-wind"></div>
+<!-- CUSTOMIZE PAGE 2: Stickers + Wind -->
+<div id="s-custom2" class="scr bg-dark">
+<div style="display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:100%;width:100%;padding:4px 0;padding-top:max(4px, env(safe-area-inset-top, 4px));padding-bottom:max(4px, env(safe-area-inset-bottom, 4px));">
+<div class="t1" style="font-size:22px;margin:2px 0">Decorate & Wind!</div>
 
-<button class="btn" style="font-size:20px;margin:10px 0 20px" onclick="startGame()">FLY! 🪁</button>
+<canvas id="kite-preview2" width="180" height="140"></canvas>
+
+<div class="lbl" style="margin:4px 0 2px">Stickers (pick up to 3)</div>
+<div class="row" id="r-stk" style="gap:6px;margin:2px 0"></div>
+
+<div class="lbl" style="margin:4px 0 2px">Wind Speed</div>
+<div class="row" id="r-wind" style="gap:10px;margin:2px 0"></div>
+
+<div style="display:flex;gap:10px;margin:6px 0">
+<button class="btn btn-blue" style="font-size:16px;padding:10px 20px" onclick="goCustomize()">← BACK</button>
+<button class="btn" style="font-size:20px;padding:12px 28px" onclick="startGame()">FLY! 🪁</button>
+</div>
+</div>
 </div>
 
 <!-- LEVEL INTRO -->
@@ -299,131 +315,191 @@ function drumClap(tt, vol) {
   }
 }
 
-// ===== LEVEL THEME DATA — 10 unique tracks =====
+// ===== MODERN SYNTH HELPERS =====
+function synthLead(freq, vol, start, dur, type, filterFreq) {
+  if (!AC || freq <= 0 || soundMuted) return;
+  var o1 = AC.createOscillator(), o2 = AC.createOscillator();
+  var g = AC.createGain(), f = AC.createBiquadFilter();
+  o1.type = type || 'sawtooth'; o2.type = 'square';
+  o1.frequency.setValueAtTime(freq, start); o2.frequency.setValueAtTime(freq * 1.003, start);
+  o2.detune.setValueAtTime(7, start);
+  f.type = 'lowpass'; f.frequency.setValueAtTime(filterFreq || 3000, start);
+  f.Q.setValueAtTime(2, start);
+  g.gain.setValueAtTime(0, start);
+  g.gain.linearRampToValueAtTime(vol, start + 0.01);
+  g.gain.setValueAtTime(vol * 0.8, start + dur * 0.3);
+  g.gain.exponentialRampToValueAtTime(0.001, start + dur);
+  o1.connect(f); o2.connect(f); f.connect(g).connect(AC.destination);
+  o1.start(start); o1.stop(start + dur + 0.01);
+  o2.start(start); o2.stop(start + dur + 0.01);
+}
+function synthBass(freq, vol, start, dur) {
+  if (!AC || freq <= 0 || soundMuted) return;
+  var o = AC.createOscillator(), sub = AC.createOscillator();
+  var g = AC.createGain(), f = AC.createBiquadFilter();
+  o.type = 'sawtooth'; o.frequency.setValueAtTime(freq, start);
+  sub.type = 'sine'; sub.frequency.setValueAtTime(freq * 0.5, start);
+  f.type = 'lowpass'; f.frequency.setValueAtTime(800, start);
+  f.frequency.exponentialRampToValueAtTime(200, start + dur * 0.8);
+  f.Q.setValueAtTime(5, start);
+  g.gain.setValueAtTime(vol, start);
+  g.gain.exponentialRampToValueAtTime(0.001, start + dur);
+  o.connect(f); sub.connect(f); f.connect(g).connect(AC.destination);
+  o.start(start); o.stop(start + dur + 0.01);
+  sub.start(start); sub.stop(start + dur + 0.01);
+}
+function synthChord(freqs, vol, start, dur) {
+  if (!AC || soundMuted) return;
+  freqs.forEach(function(freq) {
+    if (freq <= 0) return;
+    var o = AC.createOscillator(), g = AC.createGain(), f = AC.createBiquadFilter();
+    o.type = 'triangle'; o.frequency.setValueAtTime(freq, start);
+    o.detune.setValueAtTime(Math.random() * 8 - 4, start);
+    f.type = 'lowpass'; f.frequency.setValueAtTime(2000, start); f.Q.setValueAtTime(1, start);
+    g.gain.setValueAtTime(0, start);
+    g.gain.linearRampToValueAtTime(vol, start + 0.02);
+    g.gain.setValueAtTime(vol * 0.6, start + dur * 0.5);
+    g.gain.exponentialRampToValueAtTime(0.001, start + dur);
+    o.connect(f); f.connect(g).connect(AC.destination);
+    o.start(start); o.stop(start + dur + 0.01);
+  });
+}
+function synthArp(freq, vol, start, dur) {
+  if (!AC || freq <= 0 || soundMuted) return;
+  var o = AC.createOscillator(), g = AC.createGain(), f = AC.createBiquadFilter();
+  o.type = 'square'; o.frequency.setValueAtTime(freq, start);
+  f.type = 'bandpass'; f.frequency.setValueAtTime(freq * 2, start); f.Q.setValueAtTime(3, start);
+  g.gain.setValueAtTime(vol, start);
+  g.gain.exponentialRampToValueAtTime(0.001, start + dur);
+  o.connect(f); f.connect(g).connect(AC.destination);
+  o.start(start); o.stop(start + dur + 0.01);
+}
+
+// ===== LEVEL THEME DATA — 10 unique modern tracks =====
 function getLevelTheme(lvl) {
   var themes = [
-    // LEVEL 1: BURJ KHALIFA — Bright & heroic UAE anthem Mario style, Bb major, BPM 150
+    // LEVEL 1: BURJ KHALIFA — Upbeat pop-EDM, C major, BPM 128
     {
-      bpm: 150, lead: 'square', leadVol: 0.045, bassVol: 0.09, padVol: 0.015,
-      mel: [466,466,0,587, 587,0,698,698, 698,0,932,0, 932,0,0,0,
-            932,0,880,0, 784,0,698,0, 622,0,587,0, 587,0,0,0,
-            622,622,0,698, 698,0,784,784, 784,0,831,0, 932,932,0,0,
-            932,0,831,0, 784,0,698,0, 622,0,698,0, 698,0,0,0],
-      bass:[233,0,466,0, 233,0,466,233, 175,0,349,0, 175,0,349,175,
-            233,0,466,0, 196,0,392,196, 175,0,349,0, 175,0,262,175,
-            156,0,311,0, 175,0,349,175, 196,0,392,0, 233,0,466,233,
-            233,0,415,0, 196,0,392,196, 156,0,175,0, 175,0,262,175],
-      chords:[466,0,0,587, 0,0,698,0, 0,0,932,0, 0,0,0,0,
-              932,0,0,784, 0,0,698,0, 0,0,587,0, 0,0,0,0,
-              622,0,0,698, 0,0,784,0, 0,0,831,0, 932,0,0,0,
-              932,0,0,784, 0,0,698,0, 0,0,698,0, 0,0,0,0],
-      drumStyle: 'mario'
+      bpm: 128, style: 'pop', leadVol: 0.04, bassVol: 0.1, padVol: 0.012, filterFreq: 3500,
+      mel: [523,0,659,523, 784,0,659,0, 523,0,784,0, 880,784,0,0,
+            698,0,784,698, 659,0,523,0, 587,0,659,0, 523,0,0,0,
+            523,0,659,523, 784,0,880,0, 1047,0,880,0, 784,659,0,0,
+            698,0,784,698, 659,0,523,0, 587,523,0,0, 523,0,0,0],
+      bass:[131,0,262,0, 131,0,262,131, 98,0,196,0, 98,0,196,98,
+            131,0,262,0, 110,0,220,110, 98,0,196,0, 98,0,147,98,
+            87,0,175,0, 98,0,196,98, 110,0,220,0, 131,0,262,131,
+            131,0,233,0, 110,0,220,110, 87,0,98,0, 98,0,147,98],
+      chords:[[523,659,784],0,0,0, 0,0,[587,698,880],0, 0,0,0,0, 0,0,0,0,
+              [440,523,659],0,0,0, 0,0,[494,587,698],0, 0,0,0,0, 0,0,0,0,
+              [523,659,784],0,0,0, 0,0,[587,698,880],0, 0,0,0,0, 0,0,0,0,
+              [440,523,659],0,0,0, 0,0,[392,494,587],0, 0,0,0,0, 0,0,0,0],
+      drums: 'pop'
     },
-    // LEVEL 2: DUBAI DESERT — Mysterious Arabian vibe, D minor, BPM 120, oud-like lead
+    // LEVEL 2: DUBAI DESERT — Chill trap beat, D minor, BPM 85
     {
-      bpm: 120, lead: 'triangle', leadVol: 0.055, bassVol: 0.08, padVol: 0.02,
-      mel: [294,0,349,0, 392,0,415,0, 440,0,415,0, 392,0,349,0,
-            294,0,0,0, 349,0,294,0, 262,0,294,0, 294,0,0,0,
-            440,0,494,0, 523,0,587,0, 523,0,494,0, 440,0,392,0,
-            349,0,392,0, 440,0,349,0, 294,0,0,0, 0,0,0,0],
-      bass:[147,0,0,0, 147,0,294,0, 175,0,0,0, 175,0,349,0,
-            147,0,0,0, 175,0,0,0, 131,0,0,0, 147,0,0,0,
-            220,0,0,0, 220,0,440,0, 262,0,0,0, 220,0,0,0,
-            175,0,0,0, 220,0,0,0, 147,0,0,0, 0,0,0,0],
-      chords:[294,0,0,0, 0,0,415,0, 0,0,0,0, 349,0,0,0,
-              294,0,0,0, 0,0,0,0, 262,0,0,0, 294,0,0,0,
-              440,0,0,0, 0,0,587,0, 523,0,0,0, 0,0,0,0,
-              349,0,0,0, 440,0,0,0, 294,0,0,0, 0,0,0,0],
-      drumStyle: 'arabian'
+      bpm: 85, style: 'trap', leadVol: 0.04, bassVol: 0.12, padVol: 0.015, filterFreq: 2500,
+      mel: [587,0,698,587, 0,523,0,0, 587,0,784,0, 698,0,0,0,
+            587,0,523,0, 466,0,523,0, 587,0,0,0, 0,0,0,0,
+            784,0,880,784, 0,698,0,0, 784,0,988,0, 880,0,0,0,
+            784,0,698,0, 587,0,523,0, 587,0,0,0, 0,0,0,0],
+      bass:[147,0,0,147, 0,0,147,0, 175,0,0,0, 0,175,0,0,
+            147,0,0,0, 175,0,0,0, 131,0,0,131, 0,0,0,0,
+            196,0,0,196, 0,0,196,0, 220,0,0,0, 0,220,0,0,
+            175,0,0,0, 196,0,0,0, 147,0,0,0, 0,0,0,0],
+      chords:[[587,698,880],0,0,0, 0,0,0,0, [523,659,784],0,0,0, 0,0,0,0,
+              [587,698,880],0,0,0, 0,0,0,0, [466,587,698],0,0,0, 0,0,0,0,
+              [698,880,1047],0,0,0, 0,0,0,0, [784,988,1175],0,0,0, 0,0,0,0,
+              [587,698,880],0,0,0, 0,0,0,0, [523,659,784],0,0,0, 0,0,0,0],
+      drums: 'trap'
     },
-    // LEVEL 3: SHEIKH ZAYED MOSQUE — Majestic & spiritual, Eb major, BPM 110, organ-like
+    // LEVEL 3: MOSQUE — Ambient future bass, Eb major, BPM 140
     {
-      bpm: 110, lead: 'sine', leadVol: 0.06, bassVol: 0.07, padVol: 0.025,
-      mel: [311,0,392,0, 466,0,523,0, 466,0,392,0, 311,0,0,0,
-            349,0,415,0, 466,0,523,0, 587,0,523,0, 466,0,0,0,
-            622,0,587,0, 523,0,466,0, 415,0,466,0, 523,0,0,0,
-            466,0,415,0, 392,0,349,0, 311,0,349,0, 311,0,0,0],
-      bass:[156,0,233,0, 156,0,233,0, 175,0,262,0, 156,0,233,0,
-            175,0,262,0, 175,0,262,0, 196,0,294,0, 175,0,262,0,
-            208,0,311,0, 196,0,294,0, 175,0,262,0, 196,0,0,0,
-            175,0,262,0, 156,0,233,0, 156,0,0,0, 156,0,0,0],
-      chords:[311,0,0,466, 0,0,0,0, 349,0,0,0, 311,0,0,0,
-              349,0,0,466, 0,0,0,0, 415,0,0,0, 349,0,0,0,
-              523,0,0,622, 0,0,0,0, 466,0,0,0, 0,0,0,0,
-              349,0,0,0, 311,0,0,0, 311,0,0,0, 0,0,0,0],
-      drumStyle: 'gentle'
+      bpm: 140, style: 'futurebass', leadVol: 0.035, bassVol: 0.1, padVol: 0.02, filterFreq: 4000,
+      mel: [622,0,784,0, 932,0,784,622, 0,0,784,0, 932,1047,0,0,
+            880,0,784,0, 622,0,0,0, 587,0,622,0, 784,0,0,0,
+            932,0,1047,0, 1175,0,1047,932, 0,0,1047,0, 1175,1319,0,0,
+            1047,0,932,0, 784,0,0,0, 622,0,784,0, 622,0,0,0],
+      bass:[156,0,311,156, 0,156,311,0, 175,0,349,175, 0,175,349,0,
+            156,0,311,156, 0,156,311,0, 147,0,294,147, 0,147,294,0,
+            208,0,415,208, 0,208,415,0, 233,0,466,233, 0,233,466,0,
+            175,0,349,175, 0,175,349,0, 156,0,311,0, 156,0,0,0],
+      chords:[[622,784,932],0,0,0, 0,0,0,[698,880,1047], 0,0,0,0, 0,0,0,0,
+              [587,698,880],0,0,0, 0,0,0,[622,784,932], 0,0,0,0, 0,0,0,0,
+              [784,932,1175],0,0,0, 0,0,0,[880,1047,1319], 0,0,0,0, 0,0,0,0,
+              [698,880,1047],0,0,0, 0,0,0,[622,784,932], 0,0,0,0, 0,0,0,0],
+      drums: 'futurebass'
     },
-    // LEVEL 4: DUBAI MARINA — Funky disco vibe, F major, BPM 130, party groove
+    // LEVEL 4: DUBAI MARINA — Disco house, F major, BPM 124
     {
-      bpm: 130, lead: 'square', leadVol: 0.04, bassVol: 0.1, padVol: 0.012,
-      mel: [698,0,784,0, 880,0,698,0, 784,0,0,880, 0,784,0,0,
-            698,0,659,0, 587,0,659,0, 698,0,0,0, 0,0,0,0,
-            880,0,988,0, 1047,0,880,0, 988,0,0,1047, 0,988,0,0,
-            880,0,784,0, 698,0,784,0, 880,0,0,0, 0,0,0,0],
-      bass:[175,0,349,175, 0,175,349,0, 196,0,392,196, 0,196,392,0,
-            175,0,349,175, 165,0,330,165, 147,0,294,147, 0,0,0,0,
-            220,0,440,220, 0,220,440,0, 247,0,494,247, 0,247,494,0,
-            220,0,440,220, 196,0,392,196, 175,0,349,175, 0,0,0,0],
-      chords:[0,698,0,0, 0,0,0,784, 0,880,0,0, 0,0,0,0,
-              0,698,0,0, 0,0,0,659, 0,587,0,0, 0,0,0,0,
-              0,880,0,0, 0,0,0,988, 0,1047,0,0, 0,0,0,0,
-              0,880,0,0, 0,0,0,784, 0,698,0,0, 0,0,0,0],
-      drumStyle: 'disco'
+      bpm: 124, style: 'house', leadVol: 0.035, bassVol: 0.1, padVol: 0.012, filterFreq: 3000,
+      mel: [698,0,784,880, 0,784,0,698, 0,880,784,0, 698,0,0,0,
+            659,0,698,784, 0,698,0,659, 0,784,698,0, 659,0,0,0,
+            880,0,988,1047, 0,988,0,880, 0,1047,988,0, 880,0,0,0,
+            784,0,880,698, 0,659,0,587, 0,698,659,0, 698,0,0,0],
+      bass:[175,0,349,0, 175,0,349,175, 196,0,392,0, 196,0,392,196,
+            165,0,330,0, 165,0,330,165, 147,0,294,0, 147,0,294,147,
+            220,0,440,0, 220,0,440,220, 247,0,494,0, 247,0,494,247,
+            196,0,392,0, 175,0,349,175, 147,0,294,0, 175,0,0,0],
+      chords:[[698,880,1047],0,0,0, 0,[784,988,1175],0,0, 0,0,0,0, 0,0,0,0,
+              [659,784,988],0,0,0, 0,[587,698,880],0,0, 0,0,0,0, 0,0,0,0,
+              [880,1047,1319],0,0,0, 0,[988,1175,1397],0,0, 0,0,0,0, 0,0,0,0,
+              [784,988,1175],0,0,0, 0,[698,880,1047],0,0, 0,0,0,0, 0,0,0,0],
+      drums: 'house'
     },
-    // LEVEL 5: EMIRATES PALACE — Royal waltz-like, Ab major, BPM 138, regal feel
+    // LEVEL 5: EMIRATES PALACE — Majestic EDM, Ab major, BPM 132
     {
-      bpm: 138, lead: 'triangle', leadVol: 0.05, bassVol: 0.08, padVol: 0.02,
-      mel: [415,0,523,0, 622,0,831,0, 622,0,523,0, 415,0,0,0,
-            466,0,554,0, 622,0,831,0, 932,0,831,0, 622,0,0,0,
-            831,0,932,0, 1047,0,932,0, 831,0,622,0, 554,0,0,0,
-            622,0,554,0, 466,0,415,0, 466,0,415,0, 415,0,0,0],
-      bass:[208,0,415,0, 208,0,415,0, 233,0,466,0, 208,0,415,0,
-            233,0,466,0, 233,0,466,0, 262,0,523,0, 233,0,466,0,
-            277,0,554,0, 262,0,523,0, 233,0,466,0, 208,0,0,0,
-            233,0,466,0, 208,0,415,0, 208,0,0,0, 208,0,0,0],
-      chords:[415,0,0,523, 0,0,622,0, 0,0,0,0, 0,0,0,0,
-              466,0,0,554, 0,0,622,0, 0,0,0,0, 0,0,0,0,
-              831,0,0,932, 0,0,0,0, 622,0,0,0, 0,0,0,0,
-              622,0,0,0, 466,0,0,0, 415,0,0,0, 0,0,0,0],
-      drumStyle: 'waltz'
+      bpm: 132, style: 'edm', leadVol: 0.04, bassVol: 0.11, padVol: 0.015, filterFreq: 4500,
+      mel: [831,0,932,1047, 932,0,831,0, 784,0,831,0, 932,0,0,0,
+            1047,0,1175,1047, 932,0,831,0, 784,0,622,0, 831,0,0,0,
+            1319,0,1175,1047, 1175,0,1319,0, 1397,0,1319,0, 1175,0,0,0,
+            1047,0,932,831, 932,0,1047,0, 831,0,784,0, 831,0,0,0],
+      bass:[208,0,415,0, 208,0,415,208, 233,0,466,0, 233,0,466,233,
+            262,0,523,0, 262,0,523,262, 233,0,466,0, 208,0,415,208,
+            277,0,554,0, 277,0,554,277, 311,0,622,0, 311,0,622,311,
+            262,0,523,0, 233,0,466,233, 208,0,415,0, 208,0,0,0],
+      chords:[[831,1047,1319],0,0,0, 0,0,0,0, [932,1175,1397],0,0,0, 0,0,0,0,
+              [1047,1319,1568],0,0,0, 0,0,0,0, [831,1047,1319],0,0,0, 0,0,0,0,
+              [1175,1397,1760],0,0,0, 0,0,0,0, [1319,1568,1976],0,0,0, 0,0,0,0,
+              [1047,1319,1568],0,0,0, 0,0,0,0, [831,1047,1319],0,0,0, 0,0,0,0],
+      drums: 'edm'
     },
-    // LEVEL 6: LOUVRE ABU DHABI — Artsy & dreamy, C major, BPM 115, ethereal pads
+    // LEVEL 6: LOUVRE — Dreamy synthwave, C major, BPM 100
     {
-      bpm: 115, lead: 'sine', leadVol: 0.05, bassVol: 0.06, padVol: 0.03,
-      mel: [523,0,659,0, 784,0,880,0, 784,0,659,0, 523,0,0,0,
-            587,0,698,0, 784,0,880,0, 988,0,880,0, 784,0,0,0,
-            1047,0,988,0, 880,0,784,0, 698,0,659,0, 587,0,0,0,
-            523,0,587,0, 659,0,523,0, 494,0,523,0, 523,0,0,0],
-      bass:[131,0,0,262, 0,0,0,0, 147,0,0,294, 0,0,0,0,
-            131,0,0,262, 0,0,0,0, 147,0,0,294, 0,0,0,0,
-            165,0,0,330, 0,0,0,0, 147,0,0,294, 0,0,0,0,
-            131,0,0,262, 0,0,0,0, 124,0,0,247, 131,0,0,0],
-      chords:[523,0,659,0, 784,0,0,0, 0,0,0,0, 0,0,0,0,
-              587,0,698,0, 880,0,0,0, 0,0,0,0, 0,0,0,0,
-              880,0,784,0, 698,0,0,0, 0,0,0,0, 0,0,0,0,
-              523,0,0,0, 0,0,0,0, 494,0,0,0, 523,0,0,0],
-      drumStyle: 'gentle'
+      bpm: 100, style: 'synthwave', leadVol: 0.04, bassVol: 0.09, padVol: 0.02, filterFreq: 2000,
+      mel: [523,0,659,784, 880,0,784,0, 659,0,523,0, 0,0,0,0,
+            587,0,698,880, 988,0,880,0, 698,0,587,0, 0,0,0,0,
+            784,0,880,988, 1047,0,988,0, 880,0,784,0, 0,0,0,0,
+            659,0,784,659, 523,0,494,0, 523,0,0,0, 0,0,0,0],
+      bass:[131,0,0,262, 0,0,131,0, 147,0,0,294, 0,0,147,0,
+            131,0,0,262, 0,0,131,0, 147,0,0,294, 0,0,147,0,
+            165,0,0,330, 0,0,165,0, 147,0,0,294, 0,0,147,0,
+            131,0,0,262, 0,0,131,0, 124,0,0,247, 131,0,0,0],
+      chords:[[523,659,784],0,0,0, 0,0,0,0, [587,698,880],0,0,0, 0,0,0,0,
+              [523,659,784],0,0,0, 0,0,0,0, [587,698,880],0,0,0, 0,0,0,0,
+              [659,784,988],0,0,0, 0,0,0,0, [587,698,880],0,0,0, 0,0,0,0,
+              [523,659,784],0,0,0, 0,0,0,0, [494,587,698],0,0,0, 0,0,0,0],
+      drums: 'synthwave'
     },
-    // LEVEL 7: BURJ AL ARAB — Luxury funk, G major, BPM 140, slap bass vibes
+    // LEVEL 7: BURJ AL ARAB — Funky electro, G major, BPM 118
     {
-      bpm: 140, lead: 'square', leadVol: 0.04, bassVol: 0.1, padVol: 0.012,
-      mel: [784,0,880,784, 0,659,0,0, 784,0,988,0, 880,0,0,0,
-            784,0,659,0, 587,0,659,0, 784,0,0,0, 0,0,0,0,
-            988,0,1175,988, 0,880,0,0, 988,0,1319,0, 1175,0,0,0,
-            988,0,880,0, 784,0,880,0, 784,0,0,0, 0,0,0,0],
-      bass:[196,0,392,196, 0,0,294,0, 196,0,392,0, 247,0,196,0,
-            196,0,392,196, 175,0,349,0, 196,0,294,0, 196,0,0,0,
-            247,0,494,247, 0,0,370,0, 247,0,494,0, 294,0,247,0,
-            247,0,494,247, 220,0,440,0, 196,0,392,0, 196,0,0,0],
-      chords:[0,784,0,0, 659,0,0,0, 0,988,0,0, 880,0,0,0,
-              0,784,0,0, 587,0,0,0, 0,784,0,0, 0,0,0,0,
-              0,988,0,0, 880,0,0,0, 0,1319,0,0, 1175,0,0,0,
-              0,988,0,0, 784,0,0,0, 0,784,0,0, 0,0,0,0],
-      drumStyle: 'funk'
+      bpm: 118, style: 'electrofunk', leadVol: 0.035, bassVol: 0.11, padVol: 0.012, filterFreq: 3500,
+      mel: [784,0,880,784, 0,659,784,0, 880,0,988,0, 880,784,0,0,
+            659,0,784,659, 0,587,659,0, 784,0,0,0, 0,0,0,0,
+            988,0,1175,988, 0,880,988,0, 1175,0,1319,0, 1175,988,0,0,
+            880,0,988,880, 0,784,659,0, 784,0,0,0, 0,0,0,0],
+      bass:[196,0,392,0, 196,0,392,196, 247,0,494,0, 247,0,494,247,
+            220,0,440,0, 220,0,440,220, 196,0,392,0, 196,0,294,196,
+            247,0,494,0, 247,0,494,247, 294,0,587,0, 294,0,587,294,
+            262,0,523,0, 247,0,494,247, 196,0,392,0, 196,0,0,0],
+      chords:[[784,988,1175],0,0,0, 0,0,[659,784,988],0, 0,0,0,0, 0,0,0,0,
+              [587,784,880],0,0,0, 0,0,[659,784,988],0, 0,0,0,0, 0,0,0,0,
+              [988,1175,1397],0,0,0, 0,0,[880,1047,1319],0, 0,0,0,0, 0,0,0,0,
+              [880,1047,1175],0,0,0, 0,0,[784,988,1175],0, 0,0,0,0, 0,0,0,0],
+      drums: 'electrofunk'
     },
-    // LEVEL 8: DUBAI FRAME — Techy electronic, A minor, BPM 145, synth arpeggios
+    // LEVEL 8: DUBAI FRAME — Techy bass music, A minor, BPM 140
     {
-      bpm: 145, lead: 'sawtooth', leadVol: 0.035, bassVol: 0.09, padVol: 0.015,
+      bpm: 140, style: 'bass', leadVol: 0.035, bassVol: 0.12, padVol: 0.015, filterFreq: 5000,
       mel: [440,523,659,523, 440,523,659,784, 880,784,659,523, 440,0,0,0,
             494,587,698,587, 494,587,698,880, 988,880,698,587, 494,0,0,0,
             523,659,784,659, 523,659,784,988, 1047,988,784,659, 523,0,0,0,
@@ -432,45 +508,45 @@ function getLevelTheme(lvl) {
             124,0,247,124, 0,124,247,0, 131,0,262,131, 0,131,262,0,
             131,0,262,131, 0,131,262,0, 147,0,294,147, 0,147,294,0,
             110,0,220,110, 0,110,220,0, 98,0,196,98, 110,0,0,0],
-      chords:[440,0,0,0, 0,659,0,0, 0,0,0,0, 0,0,0,0,
-              494,0,0,0, 0,698,0,0, 0,0,0,0, 0,0,0,0,
-              523,0,0,0, 0,784,0,0, 0,0,0,0, 0,0,0,0,
-              440,0,0,0, 0,523,0,0, 392,0,0,0, 440,0,0,0],
-      drumStyle: 'electronic'
+      chords:[[440,523,659],0,0,0, 0,0,0,0, [494,587,698],0,0,0, 0,0,0,0,
+              [523,659,784],0,0,0, 0,0,0,0, [440,523,659],0,0,0, 0,0,0,0,
+              [523,659,784],0,0,0, 0,0,0,0, [587,698,880],0,0,0, 0,0,0,0,
+              [440,523,659],0,0,0, 0,0,0,0, [392,494,587],0,0,0, 0,0,0,0],
+      drums: 'bass'
     },
-    // LEVEL 9: EMIRATES TOWERS — Intense action, E minor, BPM 160, power rock
+    // LEVEL 9: EMIRATES TOWERS — Intense DnB, E minor, BPM 170
     {
-      bpm: 160, lead: 'square', leadVol: 0.045, bassVol: 0.1, padVol: 0.015,
-      mel: [659,0,784,0, 880,0,988,0, 880,0,784,0, 659,0,0,0,
-            587,0,659,0, 784,0,880,0, 784,0,659,0, 587,0,0,0,
-            988,0,1175,0, 1319,0,1175,0, 988,0,880,0, 784,0,0,0,
-            880,0,784,0, 659,0,587,0, 659,0,0,659, 659,0,0,0],
-      bass:[165,0,330,165, 165,0,330,0, 196,0,392,196, 196,0,392,0,
-            147,0,294,147, 147,0,294,0, 175,0,349,175, 175,0,349,0,
-            196,0,392,196, 196,0,392,0, 220,0,440,220, 220,0,440,0,
-            175,0,349,175, 165,0,330,165, 165,0,330,0, 165,0,0,0],
-      chords:[659,0,0,784, 0,0,880,0, 0,0,0,0, 659,0,0,0,
-              587,0,0,659, 0,0,784,0, 0,0,0,0, 587,0,0,0,
-              988,0,0,1175, 0,0,0,0, 880,0,0,0, 784,0,0,0,
-              880,0,0,0, 659,0,0,0, 659,0,0,0, 0,0,0,0],
-      drumStyle: 'rock'
+      bpm: 170, style: 'dnb', leadVol: 0.04, bassVol: 0.1, padVol: 0.015, filterFreq: 4000,
+      mel: [659,0,784,0, 880,0,988,880, 784,0,659,0, 0,0,0,0,
+            587,0,659,0, 784,0,880,784, 659,0,587,0, 0,0,0,0,
+            988,0,1175,0, 1319,0,1175,988, 880,0,784,0, 0,0,0,0,
+            880,0,784,659, 587,0,659,0, 659,0,0,0, 0,0,0,0],
+      bass:[165,0,0,330, 165,0,330,0, 196,0,0,392, 196,0,392,0,
+            147,0,0,294, 147,0,294,0, 175,0,0,349, 175,0,349,0,
+            196,0,0,392, 196,0,392,0, 220,0,0,440, 220,0,440,0,
+            175,0,0,349, 165,0,330,0, 165,0,0,0, 0,0,0,0],
+      chords:[[659,784,988],0,0,0, 0,0,0,0, [587,698,880],0,0,0, 0,0,0,0,
+              [523,659,784],0,0,0, 0,0,0,0, [587,698,880],0,0,0, 0,0,0,0,
+              [659,784,988],0,0,0, 0,0,0,0, [698,880,1047],0,0,0, 0,0,0,0,
+              [587,698,880],0,0,0, 0,0,0,0, [523,659,784],0,0,0, 0,0,0,0],
+      drums: 'dnb'
     },
-    // LEVEL 10: ATLANTIS THE PALM — Epic finale, D major, BPM 155, triumphant fanfare
+    // LEVEL 10: ATLANTIS — Epic festival anthem, D major, BPM 150
     {
-      bpm: 155, lead: 'square', leadVol: 0.05, bassVol: 0.1, padVol: 0.02,
-      mel: [587,587,0,698, 784,0,880,0, 988,0,1175,0, 1175,0,0,0,
-            1175,0,988,0, 880,0,784,0, 698,0,587,0, 587,0,0,0,
-            1175,1175,0,1319, 1397,0,1568,0, 1760,0,1568,0, 1397,0,0,0,
-            1175,0,1319,0, 1397,0,1175,0, 988,0,1175,0, 1175,0,0,0],
-      bass:[147,0,294,147, 147,0,294,0, 175,0,349,175, 175,0,349,0,
-            196,0,392,196, 196,0,392,0, 175,0,349,175, 147,0,294,0,
-            147,0,294,147, 165,0,330,0, 175,0,349,175, 175,0,349,0,
-            196,0,392,196, 175,0,349,0, 147,0,294,147, 147,0,0,0],
-      chords:[587,0,0,698, 0,0,880,0, 0,0,1175,0, 0,0,0,0,
-              1175,0,0,988, 0,0,784,0, 0,0,587,0, 0,0,0,0,
-              1175,0,0,1319, 0,0,1568,0, 0,0,0,0, 0,0,0,0,
-              1175,0,0,1397, 0,0,1175,0, 988,0,0,0, 1175,0,0,0],
-      drumStyle: 'epic'
+      bpm: 150, style: 'anthem', leadVol: 0.045, bassVol: 0.11, padVol: 0.02, filterFreq: 5000,
+      mel: [587,587,0,698, 784,0,880,988, 1175,0,988,0, 880,0,0,0,
+            988,0,880,784, 698,0,587,0, 587,0,698,0, 784,0,0,0,
+            1175,1175,0,1319, 1397,0,1568,1397, 1319,0,1175,0, 988,0,0,0,
+            1175,0,1319,1175, 988,0,880,0, 988,0,1175,0, 1175,0,0,0],
+      bass:[147,0,294,0, 147,0,294,147, 175,0,349,0, 175,0,349,175,
+            196,0,392,0, 196,0,392,196, 175,0,349,0, 147,0,294,147,
+            147,0,294,0, 165,0,330,165, 175,0,349,0, 175,0,349,175,
+            196,0,392,0, 175,0,349,175, 147,0,294,0, 147,0,0,0],
+      chords:[[587,698,880],0,0,0, 0,0,[698,880,1047],0, 0,0,0,0, 0,0,0,0,
+              [784,988,1175],0,0,0, 0,0,[698,880,1047],0, 0,0,0,0, 0,0,0,0,
+              [880,1047,1319],0,0,0, 0,0,[988,1175,1397],0, 0,0,0,0, 0,0,0,0,
+              [784,988,1175],0,0,0, 0,0,[698,880,1047],0, 0,0,0,0, 0,0,0,0],
+      drums: 'anthem'
     }
   ];
   return themes[lvl % themes.length];
@@ -491,125 +567,102 @@ function playMusic(level) {
     for (var i = 0; i < len; i++) {
       var tt = t + i * b;
 
-      // Lead melody
+      // Modern filtered lead synth
       if (mel[i] > 0) {
-        ntSmooth(mel[i], theme.lead, theme.leadVol, tt, b * 0.75, 0);
-        ntSmooth(mel[i], 'triangle', theme.leadVol * 0.5, tt, b * 0.6, 7);
+        synthLead(mel[i], theme.leadVol, tt, b * 0.8, 'sawtooth', theme.filterFreq);
       }
 
-      // Bass
+      // Thick filtered bass
       if (i < bass.length && bass[i] > 0) {
-        ntSmooth(bass[i], 'sine', theme.bassVol, tt, b * 0.45, 0);
-        ntSmooth(bass[i], 'triangle', theme.bassVol * 0.3, tt, b * 0.35, 0);
+        synthBass(bass[i], theme.bassVol, tt, b * 0.5);
       }
 
-      // Chord pads
-      if (i < chords.length && chords[i] > 0) {
-        pad(chords[i], theme.padVol, tt, b * 0.7);
-        ntSmooth(chords[i] * 1.5, 'sine', theme.padVol * 0.5, tt, b * 0.5, 0);
+      // Chord stabs (supports arrays for real chords)
+      if (i < chords.length && chords[i] !== 0) {
+        var ch = chords[i];
+        if (Array.isArray(ch)) {
+          synthChord(ch, theme.padVol, tt, b * 1.5);
+        } else if (ch > 0) {
+          synthChord([ch, ch * 1.26, ch * 1.5], theme.padVol, tt, b * 1.5);
+        }
       }
 
-      // Coin accent on phrase starts
-      if (i === 0 || i === 16 || i === 32 || i === 48) {
-        coinAccent(tt, 0.025);
+      // Arp accents on phrase starts
+      if (i === 0 || i === 16 || i === 32) {
+        if (mel[i] > 0) synthArp(mel[i] * 2, 0.02, tt, 0.1);
       }
 
-      // ===== DRUM PATTERNS PER STYLE =====
-      if (theme.drumStyle === 'mario') {
-        // Classic Mario — kick on 1, ghost on 3.5, snare on 2&4, steady hats
+      // ===== MODERN DRUM PATTERNS =====
+      var ds = theme.drums;
+      if (ds === 'pop') {
         if (i % 4 === 0) drumKick(tt, 0.14);
-        if (i % 4 === 3) drumKick(tt, 0.06);
-        if (i % 4 === 2) drumSnare(tt, 0.03);
-        if (i % 2 === 0) drumHH(tt, 0.008, false);
-        if (i % 2 === 1) drumHH(tt, 0.005, true);
-        if (i % 8 === 0) { // woodblock
-          var wo = AC.createOscillator(), wg = AC.createGain();
-          wo.type = 'triangle'; wo.frequency.setValueAtTime(800, tt);
-          wo.frequency.exponentialRampToValueAtTime(600, tt + 0.02);
-          wg.gain.setValueAtTime(0.025, tt);
-          wg.gain.exponentialRampToValueAtTime(0.001, tt + 0.04);
-          wo.connect(wg).connect(AC.destination); wo.start(tt); wo.stop(tt + 0.05);
-        }
-      }
-      else if (theme.drumStyle === 'arabian') {
-        // Doumbek-style: dum on 1, tek-tek pattern, finger cymbals
-        if (i % 8 === 0) drumConga(tt, 120, 0.12);
-        if (i % 8 === 3 || i % 8 === 5) drumConga(tt, 250, 0.07);
-        if (i % 8 === 6) drumConga(tt, 280, 0.05);
-        if (i % 4 === 0) drumTambourine(tt, 0.01);
-        if (i % 2 === 1) drumHH(tt, 0.004, true); // finger cymbal
-      }
-      else if (theme.drumStyle === 'gentle') {
-        // Soft brushes — just light hats and subtle kick
-        if (i % 8 === 0) drumKick(tt, 0.06);
-        if (i % 4 === 2) drumHH(tt, 0.005, true);
-        if (i % 2 === 0) drumHH(tt, 0.003, false);
-        if (i % 8 === 4) drumTambourine(tt, 0.005);
-      }
-      else if (theme.drumStyle === 'disco') {
-        // Four-on-floor, open hats on offbeats, claps on 2&4
-        if (i % 4 === 0) drumKick(tt, 0.13);
-        if (i % 4 === 2) drumClap(tt, 0.025);
-        if (i % 2 === 0) drumHH(tt, 0.008, false);
-        if (i % 2 === 1) drumHH(tt, 0.006, true);
-        if (i % 4 === 3) drumKick(tt, 0.04); // ghost kick
-      }
-      else if (theme.drumStyle === 'waltz') {
-        // 3/4 feel mapped to 4/4 — emphasis on 1, lighter on 2,3
-        if (i % 6 === 0) drumKick(tt, 0.1);
-        if (i % 6 === 2 || i % 6 === 4) drumHH(tt, 0.006, false);
-        if (i % 6 === 3) drumTambourine(tt, 0.008);
-        if (i % 12 === 0) drumConga(tt, 200, 0.04);
-      }
-      else if (theme.drumStyle === 'funk') {
-        // Syncopated kicks, ghost snares, busy hats
-        if (i % 4 === 0) drumKick(tt, 0.13);
-        if (i % 4 === 3) drumKick(tt, 0.08);
-        if (i % 4 === 2) drumSnare(tt, 0.03);
-        if (i % 8 === 5) drumSnare(tt, 0.015); // ghost snare
-        drumHH(tt, 0.006, i % 2 === 1);
-        if (i % 8 === 0) drumConga(tt, 300, 0.04);
-      }
-      else if (theme.drumStyle === 'electronic') {
-        // TR-808 style: punchy kick, clap snare, fast hats, sub hits
-        if (i % 4 === 0) drumKick(tt, 0.15);
         if (i % 4 === 2) drumClap(tt, 0.03);
-        drumHH(tt, 0.005, false); // 16th note hats
-        if (i % 8 === 6) drumKick(tt, 0.07); // off-beat kick
-        if (i % 8 === 0) { // sub bass hit
-          var so = AC.createOscillator(), sg = AC.createGain();
-          so.type = 'sine'; so.frequency.setValueAtTime(55, tt);
-          sg.gain.setValueAtTime(0.08, tt);
-          sg.gain.exponentialRampToValueAtTime(0.001, tt + 0.2);
-          so.connect(sg).connect(AC.destination); so.start(tt); so.stop(tt + 0.25);
-        }
+        if (i % 8 === 6) drumKick(tt, 0.06);
+        drumHH(tt, 0.006, i % 2 === 1);
       }
-      else if (theme.drumStyle === 'rock') {
-        // Driving rock — heavy kick, loud snare, crash on 1
-        if (i % 4 === 0) drumKick(tt, 0.16);
-        if (i % 4 === 2) drumSnare(tt, 0.04);
-        if (i % 2 === 0) drumHH(tt, 0.009, false);
-        if (i % 2 === 1) drumHH(tt, 0.007, true);
-        if (i % 16 === 0) { // crash cymbal
-          var cr = AC.createOscillator(), cg = AC.createGain();
-          cr.type = 'sawtooth'; cr.frequency.value = 5000 + Math.random() * 3000;
-          cg.gain.setValueAtTime(0.02, tt);
-          cg.gain.exponentialRampToValueAtTime(0.001, tt + 0.3);
-          cr.connect(cg).connect(AC.destination); cr.start(tt); cr.stop(tt + 0.35);
-        }
+      else if (ds === 'trap') {
+        if (i % 8 === 0) drumKick(tt, 0.16);
+        if (i % 8 === 3) drumKick(tt, 0.08);
+        if (i % 8 === 6) drumKick(tt, 0.06);
+        if (i % 4 === 2) drumClap(tt, 0.035);
+        drumHH(tt, 0.005, false);
+        if (i % 2 === 1) drumHH(tt, 0.004, true);
       }
-      else if (theme.drumStyle === 'epic') {
-        // Cinematic — big toms, double kick, orchestral hits
+      else if (ds === 'futurebass') {
+        if (i % 4 === 0) drumKick(tt, 0.15);
+        if (i % 4 === 2) drumSnare(tt, 0.035);
+        if (i % 8 === 6) drumKick(tt, 0.07);
+        drumHH(tt, 0.005, i % 2 === 1);
+        if (i % 8 === 0) drumClap(tt, 0.02);
+      }
+      else if (ds === 'house') {
+        if (i % 4 === 0) drumKick(tt, 0.14);
+        if (i % 4 === 2) drumClap(tt, 0.028);
+        if (i % 2 === 0) drumHH(tt, 0.007, false);
+        if (i % 2 === 1) drumHH(tt, 0.006, true);
+        if (i % 8 === 7) drumConga(tt, 300, 0.04);
+      }
+      else if (ds === 'edm') {
         if (i % 4 === 0) drumKick(tt, 0.16);
-        if (i % 4 === 1) drumKick(tt, 0.08); // double kick
-        if (i % 4 === 2) drumSnare(tt, 0.04);
-        if (i % 2 === 0) drumHH(tt, 0.008, false);
-        if (i % 8 === 0) drumConga(tt, 100, 0.1); // timpani feel
-        if (i % 16 === 0) drumClap(tt, 0.035); // big clap
-        if (i % 8 === 4) { // tom fill accent
-          drumConga(tt, 180, 0.06);
-          drumConga(tt + b * 0.5, 220, 0.05);
-        }
+        if (i % 4 === 2) drumClap(tt, 0.035);
+        drumHH(tt, 0.005, false);
+        if (i % 8 === 6) drumKick(tt, 0.08);
+        if (i % 16 === 0) drumConga(tt, 100, 0.06);
+      }
+      else if (ds === 'synthwave') {
+        if (i % 4 === 0) drumKick(tt, 0.12);
+        if (i % 4 === 2) drumSnare(tt, 0.03);
+        if (i % 2 === 0) drumHH(tt, 0.005, false);
+        if (i % 8 === 4) drumTambourine(tt, 0.008);
+      }
+      else if (ds === 'electrofunk') {
+        if (i % 4 === 0) drumKick(tt, 0.14);
+        if (i % 4 === 3) drumKick(tt, 0.07);
+        if (i % 4 === 2) drumClap(tt, 0.025);
+        drumHH(tt, 0.006, i % 2 === 1);
+        if (i % 8 === 0) drumConga(tt, 250, 0.04);
+      }
+      else if (ds === 'bass') {
+        if (i % 4 === 0) drumKick(tt, 0.16);
+        if (i % 4 === 2) drumClap(tt, 0.03);
+        drumHH(tt, 0.005, false);
+        if (i % 8 === 6) drumKick(tt, 0.09);
+        if (i % 8 === 3) drumSnare(tt, 0.015);
+      }
+      else if (ds === 'dnb') {
+        if (i % 8 === 0) drumKick(tt, 0.16);
+        if (i % 8 === 4) drumSnare(tt, 0.04);
+        if (i % 8 === 3) drumKick(tt, 0.07);
+        drumHH(tt, 0.006, i % 2 === 1);
+        if (i % 16 === 0) drumClap(tt, 0.025);
+      }
+      else if (ds === 'anthem') {
+        if (i % 4 === 0) drumKick(tt, 0.16);
+        if (i % 4 === 2) drumClap(tt, 0.04);
+        drumHH(tt, 0.006, false);
+        if (i % 8 === 6) drumKick(tt, 0.08);
+        if (i % 16 === 0) drumConga(tt, 100, 0.08);
+        if (i % 8 === 0) drumTambourine(tt, 0.01);
       }
     }
     musicTmr = setTimeout(sched, (len * b - 0.3) * 1000);
@@ -671,7 +724,7 @@ function startTornado(callback) {
   tornadoCallback = callback;
   // Spawn debris particles for the tornado
   tornadoDebris = [];
-  var emojis = ['🌟','⭐','🪁','🐦','✈️','🎈','🦋','☁️','🍃','🌪️','💨','🌊','🏜️','🏖️','🏗️'];
+  var emojis = ['🌟','⭐','🪁','🐦','✈️','🎈','🦋','☁️','🍃','🌪️','💨','🌊','🏜️','🏖️','🏙️'];
   for (var i = 0; i < 40; i++) {
     tornadoDebris.push({
       angle: Math.random() * Math.PI * 2,
@@ -743,12 +796,12 @@ const LEVELS = [
 // Flying objects
 const FLYTYPE = [
   {e:'🐦',s:'bird',z:36},{e:'🦅',s:'eagle',z:42},{e:'🦜',s:'parrot',z:36},
-  {e:'✈️',s:'plane',z:46},{e:'🪁',s:'helicopter',z:44},
+  {e:'✈️',s:'plane',z:46},{e:'🚁',s:'helicopter',z:44},
   {e:'🦋',s:'butterfly',z:34},{e:'🐝',s:'bee',z:30},
   {e:'🎈',s:'balloon',z:38},{e:'🎈',s:'balloon',z:32},
   {e:'☁️',s:'cloud',z:50},{e:'🪂',s:'parachute',z:38},
   {e:'🛸',s:'ufo',z:40},{e:'🚀',s:'rocket',z:42},
-  {e:'🪁',s:'kite2',z:36},{e:'🪁',s:'kite2',z:34}
+  {e:'🪁',s:'kite2',z:36},{e:'🎏',s:'kite2',z:34}
 ];
 
 const STK = [
@@ -819,55 +872,53 @@ STK.forEach(s => {
   sr.appendChild(d);
 });
 
-// ===== KITE PREVIEW ON CUSTOMIZE SCREEN =====
+// ===== KITE PREVIEW ON BOTH CUSTOMIZE SCREENS =====
 const pvs = document.getElementById('kite-preview');
 const pctx = pvs.getContext('2d');
+const pvs2 = document.getElementById('kite-preview2');
+const pctx2 = pvs2.getContext('2d');
 let pvT = 0;
 
 function updatePreview() { /* triggers redraw next frame */ }
 
+function drawKitePreview(tctx, tw, th) {
+  tctx.clearRect(0, 0, tw, th);
+  var sz = kiteSize === 'small' ? 22 : kiteSize === 'medium' ? 35 : 50;
+  var cx = tw / 2, cy = th * 0.35;
+  var hw = sz / 2, hh = sz * 0.65;
+  var wb = Math.sin(pvT * 3) * (windLvl === 'calm' ? 1 : windLvl === 'windy' ? 4 : 9);
+
+  tctx.save(); tctx.translate(cx, cy); tctx.rotate(wb * Math.PI / 180);
+
+  tctx.beginPath(); tctx.moveTo(0, -hh); tctx.lineTo(hw, 0); tctx.lineTo(0, hh); tctx.lineTo(-hw, 0); tctx.closePath();
+  tctx.fillStyle = kiteColor; tctx.fill();
+  tctx.strokeStyle = '#fff'; tctx.lineWidth = 1.5; tctx.stroke();
+
+  tctx.beginPath(); tctx.moveTo(0, -hh); tctx.lineTo(0, hh); tctx.moveTo(-hw, 0); tctx.lineTo(hw, 0);
+  tctx.strokeStyle = 'rgba(255,255,255,.3)'; tctx.lineWidth = 1; tctx.stroke();
+
+  var sp = [{x:0,y:-hh*.3},{x:-hw*.3,y:hh*.15},{x:hw*.3,y:hh*.15}];
+  tctx.font = Math.round(sz * 0.22) + 'px sans-serif'; tctx.textAlign = 'center'; tctx.textBaseline = 'middle';
+  stickerIds.forEach(function(sid, i) { if (i >= 3) return; var s = STK.find(function(x) { return x.id === sid; }); if (s) tctx.fillText(s.e, sp[i].x, sp[i].y); });
+
+  tctx.beginPath(); tctx.moveTo(0, hh);
+  for (var i = 1; i <= 6; i++) tctx.lineTo(Math.sin(pvT * 4 + i * 0.8) * (4 + i * 1.5), hh + i * sz * 0.1);
+  tctx.strokeStyle = tailColor; tctx.lineWidth = 2; tctx.stroke();
+  for (var i = 2; i <= 6; i += 2) {
+    var tx = Math.sin(pvT * 4 + i * 0.8) * (4 + i * 1.5), ty = hh + i * sz * 0.1;
+    tctx.beginPath(); tctx.moveTo(tx - 5, ty); tctx.lineTo(tx, ty - 3); tctx.lineTo(tx + 5, ty); tctx.fillStyle = tailColor; tctx.fill();
+  }
+  tctx.restore();
+
+  tctx.fillStyle = 'rgba(255,255,255,.5)'; tctx.font = '10px Fredoka'; tctx.textAlign = 'center';
+  var windLabel = windLvl === 'calm' ? '🍃 Calm breeze' : windLvl === 'windy' ? '💨 Windy!' : '🌪️ SUPER WIND!';
+  tctx.fillText(windLabel, tw / 2, th - 6);
+}
+
 function drawPreview(dt) {
   pvT += dt;
-  const pw = pvs.width, ph = pvs.height;
-  pctx.clearRect(0, 0, pw, ph);
-
-  // Draw kite in preview
-  const sz = kiteSize === 'small' ? 22 : kiteSize === 'medium' ? 35 : 50;
-  const cx = pw / 2, cy = ph * 0.35;
-  const hw = sz / 2, hh = sz * 0.65;
-  const wb = Math.sin(pvT * 3) * (windLvl === 'calm' ? 1 : windLvl === 'windy' ? 4 : 9);
-
-  pctx.save(); pctx.translate(cx, cy); pctx.rotate(wb * Math.PI / 180);
-
-  // Diamond
-  pctx.beginPath(); pctx.moveTo(0, -hh); pctx.lineTo(hw, 0); pctx.lineTo(0, hh); pctx.lineTo(-hw, 0); pctx.closePath();
-  pctx.fillStyle = kiteColor; pctx.fill();
-  pctx.strokeStyle = '#fff'; pctx.lineWidth = 1.5; pctx.stroke();
-
-  // Struts
-  pctx.beginPath(); pctx.moveTo(0, -hh); pctx.lineTo(0, hh); pctx.moveTo(-hw, 0); pctx.lineTo(hw, 0);
-  pctx.strokeStyle = 'rgba(255,255,255,.3)'; pctx.lineWidth = 1; pctx.stroke();
-
-  // Stickers
-  const sp = [{x:0,y:-hh*.3},{x:-hw*.3,y:hh*.15},{x:hw*.3,y:hh*.15}];
-  pctx.font = Math.round(sz * 0.22) + 'px sans-serif'; pctx.textAlign = 'center'; pctx.textBaseline = 'middle';
-  stickerIds.forEach((sid, i) => { if (i >= 3) return; const s = STK.find(x => x.id === sid); if (s) pctx.fillText(s.e, sp[i].x, sp[i].y); });
-
-  // Tail
-  pctx.beginPath(); pctx.moveTo(0, hh);
-  for (let i = 1; i <= 6; i++) pctx.lineTo(Math.sin(pvT * 4 + i * 0.8) * (4 + i * 1.5), hh + i * sz * 0.1);
-  pctx.strokeStyle = tailColor; pctx.lineWidth = 2; pctx.stroke();
-  for (let i = 2; i <= 6; i += 2) {
-    const tx = Math.sin(pvT * 4 + i * 0.8) * (4 + i * 1.5), ty = hh + i * sz * 0.1;
-    pctx.beginPath(); pctx.moveTo(tx - 5, ty); pctx.lineTo(tx, ty - 3); pctx.lineTo(tx + 5, ty); pctx.fillStyle = tailColor; pctx.fill();
-  }
-
-  pctx.restore();
-
-  // Wind indicator text
-  pctx.fillStyle = 'rgba(255,255,255,.5)'; pctx.font = '10px Fredoka'; pctx.textAlign = 'center';
-  const windLabel = windLvl === 'calm' ? '🍃 Calm breeze' : windLvl === 'windy' ? '💨 Windy!' : '🌪️ SUPER WIND!';
-  pctx.fillText(windLabel, pw / 2, ph - 8);
+  drawKitePreview(pctx, pvs.width, pvs.height);
+  drawKitePreview(pctx2, pvs2.width, pvs2.height);
 }
 
 // ===== SCREEN NAV =====
@@ -880,7 +931,8 @@ function showScr(id) {
 }
 
 function goTitle() { showScr('s-title'); gameState = 'title'; }
-function goCustomize() { showScr('s-custom'); gameState = 'menu'; }
+function goCustomize() { showScr('s-custom1'); gameState = 'menu'; }
+function goCustomize2() { showScr('s-custom2'); gameState = 'menu'; }
 
 function startGame() {
   initAudio(); if (!musicOn) playMusic(0);
@@ -1291,44 +1343,22 @@ function loop(ts) {
     flyObjs = flyObjs.filter(function(o) { return o.x > -80 && o.x < W + 80; });
 
     // ====== DRAW ALL GAME OBJECTS ======
-    // Flying objects — big, bold, glowing, and dangerous!
+    // Flying objects — crisp emojis, no blur
     for (var i = 0; i < flyObjs.length; i++) {
       var o = flyObjs[i];
       var bobY = Math.sin(o.wb) * 4;
-      var tilt = Math.sin(o.wb * 0.7) * 0.15;
-      var pulse = 1 + Math.sin(o.wb * 2) * 0.08;
-      var fsz = Math.round(o.sz * pulse);
+      var tilt = Math.sin(o.wb * 0.7) * 0.12;
+      var fsz = o.sz;
 
       ctx.save();
       ctx.translate(o.x, o.y + bobY);
       ctx.rotate(tilt);
 
-      // Colored glow circle behind each object
-      var glowR = fsz * 0.7;
-      var glow = ctx.createRadialGradient(0, 0, glowR * 0.2, 0, 0, glowR);
-      glow.addColorStop(0, 'rgba(255,100,100,.35)');
-      glow.addColorStop(0.6, 'rgba(255,50,50,.15)');
-      glow.addColorStop(1, 'rgba(255,0,0,0)');
-      ctx.fillStyle = glow;
-      ctx.beginPath(); ctx.arc(0, 0, glowR, 0, Math.PI * 2); ctx.fill();
-
-      // Warning ring that pulses
-      ctx.strokeStyle = 'rgba(255,80,80,' + (0.2 + Math.sin(o.wb * 3) * 0.15) + ')';
-      ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(0, 0, glowR * (0.9 + Math.sin(o.wb * 3) * 0.15), 0, Math.PI * 2); ctx.stroke();
-
-      // Shadow under emoji
-      ctx.shadowColor = 'rgba(0,0,0,.5)';
-      ctx.shadowBlur = 8;
-      ctx.shadowOffsetX = 2;
-      ctx.shadowOffsetY = 3;
-
-      // The emoji itself — big and clear
-      ctx.font = 'bold ' + fsz + 'px sans-serif';
+      // The emoji itself — crisp and clear, no filters
+      ctx.font = fsz + 'px sans-serif';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(o.e, 0, 0);
 
-      ctx.shadowBlur = 0;
       ctx.restore();
     }
 
