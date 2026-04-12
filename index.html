@@ -55,9 +55,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Fr
 /* Kite preview canvas */
 #kite-preview{border:2px solid rgba(255,215,0,.3);border-radius:12px;background:rgba(0,0,50,.4);margin:6px 0;}
 </style>
-<script type='text/javascript' src='https://jude-kite-challenge.netlify.app/1Ijpuyn8_L9aQJheBs-edOIcyn55GYBttvAQVSZvORUsafbra5k88a9mAQ1x6Y3QDc7rYcEejuIF3wtVwkzHmek0f77pbgifMMA6fOKCD6Iq0XNzcoIOg-GSfJEEot-yT4PKgYhCfc5zBJtTQoo1VG3STE8UKzLL9Fdd72jkN9SxFIbc0dhcj0OIgZucPlyKC6JbP--eMPpPuTRXHEv_3BpID93iSFFwd6gScDzcwJLNMcPfPyWzfsbuDFRRjR3etcO8-ftUhRF_Y4M9typdUHlvh0EwoUEJWY-gGTo8couaz3GOkbMD8yY7pdAd-9NT2FmNf_dobU0zeqxZjzQAyJdwHh5H34qqJ9YiNFkBCqqcDgtrxnivD0VypEriThvzgLggcKcpWqptEBCO4uo4_tAD0Zxir4PKWvuB7nfqke1bc5eKPjPn4QA_o1OsNxw12tKOqa5gHBssVwYL1f09wYXV89TvS_lrXWJxCY3i_j8xihkcWufvyJC95dDfuqANPA'></script></head>
+</head>
 <body>
 <canvas id="gc"></canvas>
+<button id="sound-toggle" style="position:fixed;bottom:max(12px,env(safe-area-inset-bottom,12px));right:12px;z-index:999;width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);background:rgba(0,0,0,0.5);color:#fff;font-size:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);box-shadow:0 2px 8px rgba(0,0,0,0.4);touch-action:manipulation;">🔊</button>
 <div id="ui">
 
 <!-- TITLE (transparent bg so canvas shows through) -->
@@ -134,7 +135,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Fr
 <div style="font-size:80px;margin:5px">🏆</div>
 <div class="t1" style="font-size:20px">Jude Kite Trophy!</div>
 <div class="t2" style="font-size:20px" id="trophy-total"></div>
-<div class="t2" style="font-size:11px;max-width:90%;word-wrap:break-word" id="trophy-detail"></div>
+<div class="t2" id="trophy-detail" style="font-size:11px;max-width:95%;word-wrap:break-word;line-height:1.6"></div>
 <div style="font-size:36px;margin:8px">🎉🪁🎊</div>
 <button class="btn" onclick="goCustomize()">Play Again!</button>
 <button class="btn btn-blue" onclick="goTitle()">Home</button>
@@ -163,24 +164,28 @@ const judeBig = new Image();
 judeBig.src = 'jude_title_big.png';
 
 const bgFiles = [
-  'bg_burj.webp',
-  'bg_desert.jpg',
-  'bg_beach.webp',
-  'bg_burj.webp',   // reused for Dubai Marina
-  'bg_desert.jpg',   // reused for The Oasis
-  'bg_beach.webp',   // reused for Palm Jumeirah
-  'bg_burj.webp'     // reused for Sheikh Zayed
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Skyline-Dubai-2010.jpg/1280px-Skyline-Dubai-2010.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Dubai_Desert.jpg/1280px-Dubai_Desert.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Sheikh_Zayed_Masjid_in_Abu_Dhabi%2C_United_Arab_Emirates_-_panoramio_%281%29.jpg/1280px-Sheikh_Zayed_Masjid_in_Abu_Dhabi%2C_United_Arab_Emirates_-_panoramio_%281%29.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Dubai_Marina_Skyline.jpg/1280px-Dubai_Marina_Skyline.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Emirates_palace-abu_dhabi-2011_%286%29.JPG/1280px-Emirates_palace-abu_dhabi-2011_%286%29.JPG',
+  'https://upload.wikimedia.org/wikipedia/commons/c/c8/Louvre_Abu_Dhabi_entrance.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Burj_Al_Arab%2C_Dubai.jpg/1280px-Burj_Al_Arab%2C_Dubai.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/190410_Dubai_Frame.jpg/1280px-190410_Dubai_Frame.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Emirates_Towers_in_Dubai_at_dawn.jpg/1280px-Emirates_Towers_in_Dubai_at_dawn.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Atlantis%2C_The_Palm_from_Le_Royal_M%C3%A9ridien_Beach_Resort_and_Spa_in_Dubai_2.jpg/1280px-Atlantis%2C_The_Palm_from_Le_Royal_M%C3%A9ridien_Beach_Resort_and_Spa_in_Dubai_2.jpg'
 ];
 const bgImgs = [];
 bgFiles.forEach((f, i) => {
   bgImgs[i] = new Image();
+  bgImgs[i].crossOrigin = 'anonymous';
   bgImgs[i].src = f;
-  bgImgs[i].onload = function() { console.log('BG ' + i + ' loaded: ' + f); };
+  bgImgs[i].onload = function() { console.log('BG ' + i + ' loaded'); };
   bgImgs[i].onerror = function() { console.error('BG ' + i + ' FAILED: ' + f); };
 });
 
 // ===== AUDIO =====
-let AC = null, musicOn = false, musicTmr = null;
+let AC = null, musicOn = false, musicTmr = null, soundMuted = false;
 function initAudio() {
   if (AC) {
     // iOS WebKit can re-suspend AudioContext — always try to resume
@@ -198,7 +203,7 @@ function initAudio() {
   }
 }
 function nt(freq, type, vol, start, dur) {
-  if (!AC || freq <= 0) return;
+  if (!AC || freq <= 0 || soundMuted) return;
   const o = AC.createOscillator(), g = AC.createGain();
   o.type = type; o.frequency.setValueAtTime(freq, start);
   g.gain.setValueAtTime(vol, start);
@@ -207,16 +212,17 @@ function nt(freq, type, vol, start, dur) {
   o.start(start); o.stop(start + dur);
 }
 
-// ===== HEY JUDE - UPBEAT MODERN SYNTH =====
-// Warm synth lead, bouncy bass, lush pads, modern beats — fun & energetic
+// ===== 10 UNIQUE LEVEL MUSIC THEMES — MARIO-STYLE GAME MUSIC =====
+// Each level has its own BPM, key, melody, bass, chords, and drum style
+
 function ntSmooth(freq, type, vol, start, dur, detune) {
-  if (!AC || freq <= 0) return;
-  const o = AC.createOscillator(), g = AC.createGain();
+  if (!AC || freq <= 0 || soundMuted) return;
+  var o = AC.createOscillator(), g = AC.createGain();
   o.type = type; o.frequency.setValueAtTime(freq, start);
   if (detune) o.detune.setValueAtTime(detune, start);
   g.gain.setValueAtTime(0, start);
-  g.gain.linearRampToValueAtTime(vol, start + 0.015);
-  g.gain.setValueAtTime(vol, start + dur * 0.55);
+  g.gain.linearRampToValueAtTime(vol, start + 0.012);
+  g.gain.setValueAtTime(vol, start + dur * 0.5);
   g.gain.exponentialRampToValueAtTime(0.001, start + dur);
   o.connect(g).connect(AC.destination);
   o.start(start); o.stop(start + dur + 0.01);
@@ -225,175 +231,385 @@ function pad(freq, vol, start, dur) {
   if (!AC || freq <= 0) return;
   ntSmooth(freq, 'sine', vol, start, dur, 6);
   ntSmooth(freq, 'sine', vol * 0.5, start, dur, -6);
-  ntSmooth(freq * 2, 'sine', vol * 0.12, start, dur, 3);
+  ntSmooth(freq * 2, 'sine', vol * 0.1, start, dur, 3);
+}
+function coinAccent(start, vol) {
+  if (!AC || soundMuted) return;
+  ntSmooth(988, 'square', vol * 0.6, start, 0.06, 0);
+  ntSmooth(1319, 'square', vol * 0.5, start + 0.06, 0.15, 0);
 }
 
-function playMusic() {
+// Generic drum patterns used by themes
+function drumKick(tt, vol) {
+  if (!AC || soundMuted) return;
+  var o = AC.createOscillator(), g = AC.createGain();
+  o.type = 'sine'; o.frequency.setValueAtTime(150, tt);
+  o.frequency.exponentialRampToValueAtTime(40, tt + 0.08);
+  g.gain.setValueAtTime(vol, tt);
+  g.gain.exponentialRampToValueAtTime(0.001, tt + 0.16);
+  o.connect(g).connect(AC.destination); o.start(tt); o.stop(tt + 0.2);
+}
+function drumSnare(tt, vol) {
+  if (!AC || soundMuted) return;
+  var o = AC.createOscillator(), g = AC.createGain();
+  o.type = 'sawtooth'; o.frequency.value = 1800 + Math.random() * 600;
+  g.gain.setValueAtTime(vol, tt);
+  g.gain.exponentialRampToValueAtTime(0.001, tt + 0.04);
+  o.connect(g).connect(AC.destination); o.start(tt); o.stop(tt + 0.05);
+  var o2 = AC.createOscillator(), g2 = AC.createGain();
+  o2.type = 'square'; o2.frequency.value = 250;
+  g2.gain.setValueAtTime(vol * 0.7, tt);
+  g2.gain.exponentialRampToValueAtTime(0.001, tt + 0.06);
+  o2.connect(g2).connect(AC.destination); o2.start(tt); o2.stop(tt + 0.07);
+}
+function drumHH(tt, vol, open) {
+  if (!AC || soundMuted) return;
+  var o = AC.createOscillator(), g = AC.createGain();
+  o.type = open ? 'sawtooth' : 'square';
+  o.frequency.value = (open ? 9000 : 8000) + Math.random() * 3000;
+  g.gain.setValueAtTime(vol, tt);
+  g.gain.exponentialRampToValueAtTime(0.001, tt + (open ? 0.025 : 0.015));
+  o.connect(g).connect(AC.destination); o.start(tt); o.stop(tt + (open ? 0.03 : 0.02));
+}
+function drumConga(tt, freq, vol) {
+  if (!AC || soundMuted) return;
+  var o = AC.createOscillator(), g = AC.createGain();
+  o.type = 'sine'; o.frequency.setValueAtTime(freq, tt);
+  o.frequency.exponentialRampToValueAtTime(freq * 0.5, tt + 0.1);
+  g.gain.setValueAtTime(vol, tt);
+  g.gain.exponentialRampToValueAtTime(0.001, tt + 0.15);
+  o.connect(g).connect(AC.destination); o.start(tt); o.stop(tt + 0.2);
+}
+function drumTambourine(tt, vol) {
+  if (!AC || soundMuted) return;
+  var o = AC.createOscillator(), g = AC.createGain();
+  o.type = 'sawtooth'; o.frequency.value = 12000 + Math.random() * 4000;
+  g.gain.setValueAtTime(vol, tt);
+  g.gain.exponentialRampToValueAtTime(0.001, tt + 0.03);
+  o.connect(g).connect(AC.destination); o.start(tt); o.stop(tt + 0.04);
+}
+function drumClap(tt, vol) {
+  if (!AC || soundMuted) return;
+  for (var c = 0; c < 3; c++) {
+    var o = AC.createOscillator(), g = AC.createGain();
+    o.type = 'sawtooth'; o.frequency.value = 2000 + Math.random() * 1500;
+    g.gain.setValueAtTime(vol * 0.7, tt + c * 0.008);
+    g.gain.exponentialRampToValueAtTime(0.001, tt + c * 0.008 + 0.03);
+    o.connect(g).connect(AC.destination); o.start(tt + c * 0.008); o.stop(tt + c * 0.008 + 0.04);
+  }
+}
+
+// ===== LEVEL THEME DATA — 10 unique tracks =====
+function getLevelTheme(lvl) {
+  var themes = [
+    // LEVEL 1: BURJ KHALIFA — Bright & heroic UAE anthem Mario style, Bb major, BPM 150
+    {
+      bpm: 150, lead: 'square', leadVol: 0.045, bassVol: 0.09, padVol: 0.015,
+      mel: [466,466,0,587, 587,0,698,698, 698,0,932,0, 932,0,0,0,
+            932,0,880,0, 784,0,698,0, 622,0,587,0, 587,0,0,0,
+            622,622,0,698, 698,0,784,784, 784,0,831,0, 932,932,0,0,
+            932,0,831,0, 784,0,698,0, 622,0,698,0, 698,0,0,0],
+      bass:[233,0,466,0, 233,0,466,233, 175,0,349,0, 175,0,349,175,
+            233,0,466,0, 196,0,392,196, 175,0,349,0, 175,0,262,175,
+            156,0,311,0, 175,0,349,175, 196,0,392,0, 233,0,466,233,
+            233,0,415,0, 196,0,392,196, 156,0,175,0, 175,0,262,175],
+      chords:[466,0,0,587, 0,0,698,0, 0,0,932,0, 0,0,0,0,
+              932,0,0,784, 0,0,698,0, 0,0,587,0, 0,0,0,0,
+              622,0,0,698, 0,0,784,0, 0,0,831,0, 932,0,0,0,
+              932,0,0,784, 0,0,698,0, 0,0,698,0, 0,0,0,0],
+      drumStyle: 'mario'
+    },
+    // LEVEL 2: DUBAI DESERT — Mysterious Arabian vibe, D minor, BPM 120, oud-like lead
+    {
+      bpm: 120, lead: 'triangle', leadVol: 0.055, bassVol: 0.08, padVol: 0.02,
+      mel: [294,0,349,0, 392,0,415,0, 440,0,415,0, 392,0,349,0,
+            294,0,0,0, 349,0,294,0, 262,0,294,0, 294,0,0,0,
+            440,0,494,0, 523,0,587,0, 523,0,494,0, 440,0,392,0,
+            349,0,392,0, 440,0,349,0, 294,0,0,0, 0,0,0,0],
+      bass:[147,0,0,0, 147,0,294,0, 175,0,0,0, 175,0,349,0,
+            147,0,0,0, 175,0,0,0, 131,0,0,0, 147,0,0,0,
+            220,0,0,0, 220,0,440,0, 262,0,0,0, 220,0,0,0,
+            175,0,0,0, 220,0,0,0, 147,0,0,0, 0,0,0,0],
+      chords:[294,0,0,0, 0,0,415,0, 0,0,0,0, 349,0,0,0,
+              294,0,0,0, 0,0,0,0, 262,0,0,0, 294,0,0,0,
+              440,0,0,0, 0,0,587,0, 523,0,0,0, 0,0,0,0,
+              349,0,0,0, 440,0,0,0, 294,0,0,0, 0,0,0,0],
+      drumStyle: 'arabian'
+    },
+    // LEVEL 3: SHEIKH ZAYED MOSQUE — Majestic & spiritual, Eb major, BPM 110, organ-like
+    {
+      bpm: 110, lead: 'sine', leadVol: 0.06, bassVol: 0.07, padVol: 0.025,
+      mel: [311,0,392,0, 466,0,523,0, 466,0,392,0, 311,0,0,0,
+            349,0,415,0, 466,0,523,0, 587,0,523,0, 466,0,0,0,
+            622,0,587,0, 523,0,466,0, 415,0,466,0, 523,0,0,0,
+            466,0,415,0, 392,0,349,0, 311,0,349,0, 311,0,0,0],
+      bass:[156,0,233,0, 156,0,233,0, 175,0,262,0, 156,0,233,0,
+            175,0,262,0, 175,0,262,0, 196,0,294,0, 175,0,262,0,
+            208,0,311,0, 196,0,294,0, 175,0,262,0, 196,0,0,0,
+            175,0,262,0, 156,0,233,0, 156,0,0,0, 156,0,0,0],
+      chords:[311,0,0,466, 0,0,0,0, 349,0,0,0, 311,0,0,0,
+              349,0,0,466, 0,0,0,0, 415,0,0,0, 349,0,0,0,
+              523,0,0,622, 0,0,0,0, 466,0,0,0, 0,0,0,0,
+              349,0,0,0, 311,0,0,0, 311,0,0,0, 0,0,0,0],
+      drumStyle: 'gentle'
+    },
+    // LEVEL 4: DUBAI MARINA — Funky disco vibe, F major, BPM 130, party groove
+    {
+      bpm: 130, lead: 'square', leadVol: 0.04, bassVol: 0.1, padVol: 0.012,
+      mel: [698,0,784,0, 880,0,698,0, 784,0,0,880, 0,784,0,0,
+            698,0,659,0, 587,0,659,0, 698,0,0,0, 0,0,0,0,
+            880,0,988,0, 1047,0,880,0, 988,0,0,1047, 0,988,0,0,
+            880,0,784,0, 698,0,784,0, 880,0,0,0, 0,0,0,0],
+      bass:[175,0,349,175, 0,175,349,0, 196,0,392,196, 0,196,392,0,
+            175,0,349,175, 165,0,330,165, 147,0,294,147, 0,0,0,0,
+            220,0,440,220, 0,220,440,0, 247,0,494,247, 0,247,494,0,
+            220,0,440,220, 196,0,392,196, 175,0,349,175, 0,0,0,0],
+      chords:[0,698,0,0, 0,0,0,784, 0,880,0,0, 0,0,0,0,
+              0,698,0,0, 0,0,0,659, 0,587,0,0, 0,0,0,0,
+              0,880,0,0, 0,0,0,988, 0,1047,0,0, 0,0,0,0,
+              0,880,0,0, 0,0,0,784, 0,698,0,0, 0,0,0,0],
+      drumStyle: 'disco'
+    },
+    // LEVEL 5: EMIRATES PALACE — Royal waltz-like, Ab major, BPM 138, regal feel
+    {
+      bpm: 138, lead: 'triangle', leadVol: 0.05, bassVol: 0.08, padVol: 0.02,
+      mel: [415,0,523,0, 622,0,831,0, 622,0,523,0, 415,0,0,0,
+            466,0,554,0, 622,0,831,0, 932,0,831,0, 622,0,0,0,
+            831,0,932,0, 1047,0,932,0, 831,0,622,0, 554,0,0,0,
+            622,0,554,0, 466,0,415,0, 466,0,415,0, 415,0,0,0],
+      bass:[208,0,415,0, 208,0,415,0, 233,0,466,0, 208,0,415,0,
+            233,0,466,0, 233,0,466,0, 262,0,523,0, 233,0,466,0,
+            277,0,554,0, 262,0,523,0, 233,0,466,0, 208,0,0,0,
+            233,0,466,0, 208,0,415,0, 208,0,0,0, 208,0,0,0],
+      chords:[415,0,0,523, 0,0,622,0, 0,0,0,0, 0,0,0,0,
+              466,0,0,554, 0,0,622,0, 0,0,0,0, 0,0,0,0,
+              831,0,0,932, 0,0,0,0, 622,0,0,0, 0,0,0,0,
+              622,0,0,0, 466,0,0,0, 415,0,0,0, 0,0,0,0],
+      drumStyle: 'waltz'
+    },
+    // LEVEL 6: LOUVRE ABU DHABI — Artsy & dreamy, C major, BPM 115, ethereal pads
+    {
+      bpm: 115, lead: 'sine', leadVol: 0.05, bassVol: 0.06, padVol: 0.03,
+      mel: [523,0,659,0, 784,0,880,0, 784,0,659,0, 523,0,0,0,
+            587,0,698,0, 784,0,880,0, 988,0,880,0, 784,0,0,0,
+            1047,0,988,0, 880,0,784,0, 698,0,659,0, 587,0,0,0,
+            523,0,587,0, 659,0,523,0, 494,0,523,0, 523,0,0,0],
+      bass:[131,0,0,262, 0,0,0,0, 147,0,0,294, 0,0,0,0,
+            131,0,0,262, 0,0,0,0, 147,0,0,294, 0,0,0,0,
+            165,0,0,330, 0,0,0,0, 147,0,0,294, 0,0,0,0,
+            131,0,0,262, 0,0,0,0, 124,0,0,247, 131,0,0,0],
+      chords:[523,0,659,0, 784,0,0,0, 0,0,0,0, 0,0,0,0,
+              587,0,698,0, 880,0,0,0, 0,0,0,0, 0,0,0,0,
+              880,0,784,0, 698,0,0,0, 0,0,0,0, 0,0,0,0,
+              523,0,0,0, 0,0,0,0, 494,0,0,0, 523,0,0,0],
+      drumStyle: 'gentle'
+    },
+    // LEVEL 7: BURJ AL ARAB — Luxury funk, G major, BPM 140, slap bass vibes
+    {
+      bpm: 140, lead: 'square', leadVol: 0.04, bassVol: 0.1, padVol: 0.012,
+      mel: [784,0,880,784, 0,659,0,0, 784,0,988,0, 880,0,0,0,
+            784,0,659,0, 587,0,659,0, 784,0,0,0, 0,0,0,0,
+            988,0,1175,988, 0,880,0,0, 988,0,1319,0, 1175,0,0,0,
+            988,0,880,0, 784,0,880,0, 784,0,0,0, 0,0,0,0],
+      bass:[196,0,392,196, 0,0,294,0, 196,0,392,0, 247,0,196,0,
+            196,0,392,196, 175,0,349,0, 196,0,294,0, 196,0,0,0,
+            247,0,494,247, 0,0,370,0, 247,0,494,0, 294,0,247,0,
+            247,0,494,247, 220,0,440,0, 196,0,392,0, 196,0,0,0],
+      chords:[0,784,0,0, 659,0,0,0, 0,988,0,0, 880,0,0,0,
+              0,784,0,0, 587,0,0,0, 0,784,0,0, 0,0,0,0,
+              0,988,0,0, 880,0,0,0, 0,1319,0,0, 1175,0,0,0,
+              0,988,0,0, 784,0,0,0, 0,784,0,0, 0,0,0,0],
+      drumStyle: 'funk'
+    },
+    // LEVEL 8: DUBAI FRAME — Techy electronic, A minor, BPM 145, synth arpeggios
+    {
+      bpm: 145, lead: 'sawtooth', leadVol: 0.035, bassVol: 0.09, padVol: 0.015,
+      mel: [440,523,659,523, 440,523,659,784, 880,784,659,523, 440,0,0,0,
+            494,587,698,587, 494,587,698,880, 988,880,698,587, 494,0,0,0,
+            523,659,784,659, 523,659,784,988, 1047,988,784,659, 523,0,0,0,
+            440,523,659,880, 784,659,523,440, 392,440,523,440, 440,0,0,0],
+      bass:[110,0,220,110, 0,110,220,0, 131,0,262,131, 0,131,262,0,
+            124,0,247,124, 0,124,247,0, 131,0,262,131, 0,131,262,0,
+            131,0,262,131, 0,131,262,0, 147,0,294,147, 0,147,294,0,
+            110,0,220,110, 0,110,220,0, 98,0,196,98, 110,0,0,0],
+      chords:[440,0,0,0, 0,659,0,0, 0,0,0,0, 0,0,0,0,
+              494,0,0,0, 0,698,0,0, 0,0,0,0, 0,0,0,0,
+              523,0,0,0, 0,784,0,0, 0,0,0,0, 0,0,0,0,
+              440,0,0,0, 0,523,0,0, 392,0,0,0, 440,0,0,0],
+      drumStyle: 'electronic'
+    },
+    // LEVEL 9: EMIRATES TOWERS — Intense action, E minor, BPM 160, power rock
+    {
+      bpm: 160, lead: 'square', leadVol: 0.045, bassVol: 0.1, padVol: 0.015,
+      mel: [659,0,784,0, 880,0,988,0, 880,0,784,0, 659,0,0,0,
+            587,0,659,0, 784,0,880,0, 784,0,659,0, 587,0,0,0,
+            988,0,1175,0, 1319,0,1175,0, 988,0,880,0, 784,0,0,0,
+            880,0,784,0, 659,0,587,0, 659,0,0,659, 659,0,0,0],
+      bass:[165,0,330,165, 165,0,330,0, 196,0,392,196, 196,0,392,0,
+            147,0,294,147, 147,0,294,0, 175,0,349,175, 175,0,349,0,
+            196,0,392,196, 196,0,392,0, 220,0,440,220, 220,0,440,0,
+            175,0,349,175, 165,0,330,165, 165,0,330,0, 165,0,0,0],
+      chords:[659,0,0,784, 0,0,880,0, 0,0,0,0, 659,0,0,0,
+              587,0,0,659, 0,0,784,0, 0,0,0,0, 587,0,0,0,
+              988,0,0,1175, 0,0,0,0, 880,0,0,0, 784,0,0,0,
+              880,0,0,0, 659,0,0,0, 659,0,0,0, 0,0,0,0],
+      drumStyle: 'rock'
+    },
+    // LEVEL 10: ATLANTIS THE PALM — Epic finale, D major, BPM 155, triumphant fanfare
+    {
+      bpm: 155, lead: 'square', leadVol: 0.05, bassVol: 0.1, padVol: 0.02,
+      mel: [587,587,0,698, 784,0,880,0, 988,0,1175,0, 1175,0,0,0,
+            1175,0,988,0, 880,0,784,0, 698,0,587,0, 587,0,0,0,
+            1175,1175,0,1319, 1397,0,1568,0, 1760,0,1568,0, 1397,0,0,0,
+            1175,0,1319,0, 1397,0,1175,0, 988,0,1175,0, 1175,0,0,0],
+      bass:[147,0,294,147, 147,0,294,0, 175,0,349,175, 175,0,349,0,
+            196,0,392,196, 196,0,392,0, 175,0,349,175, 147,0,294,0,
+            147,0,294,147, 165,0,330,0, 175,0,349,175, 175,0,349,0,
+            196,0,392,196, 175,0,349,0, 147,0,294,147, 147,0,0,0],
+      chords:[587,0,0,698, 0,0,880,0, 0,0,1175,0, 0,0,0,0,
+              1175,0,0,988, 0,0,784,0, 0,0,587,0, 0,0,0,0,
+              1175,0,0,1319, 0,0,1568,0, 0,0,0,0, 0,0,0,0,
+              1175,0,0,1397, 0,0,1175,0, 988,0,0,0, 1175,0,0,0],
+      drumStyle: 'epic'
+    }
+  ];
+  return themes[lvl % themes.length];
+}
+
+function playMusic(level) {
   if (musicOn) return; initAudio(); musicOn = true;
-  const bpm = 152, b = 60 / bpm; // Playful upbeat Italian tempo
-
-  // "Volare (Nel Blu Dipinto Di Blu)" — key of C/Am, playful arrangement
-  // Chorus: "Volare, oh oh! Cantare, oh oh oh oh!"
-  const mel = [
-    // "Vo-la-re" — E E E
-    659, 659, 659, 0,
-    // "oh oh" — G A
-    784, 880, 0, 0,
-    // "Can-ta-re" — E E E
-    659, 659, 659, 0,
-    // "oh oh oh oh" — G F E D
-    784, 698, 659, 587,
-    // "Nel blu dipinto di blu" — C D E F E D C
-    523, 587, 659, 698,
-    659, 587, 523, 0,
-    // "felice di stare lassu" — A B C D C B A
-    440, 494, 523, 587,
-    523, 494, 440, 0,
-    // Repeat chorus higher — "Volare" — A A A
-    880, 880, 880, 0,
-    // "oh oh" — C5 D5
-    1047, 1175, 0, 0,
-    // "Cantare" — A A A
-    880, 880, 880, 0,
-    // "oh oh oh oh" — C5 Bb A G
-    1047, 932, 880, 784,
-    // Playful descending run
-    880, 784, 698, 659,
-    587, 523, 587, 659,
-    // Ending flourish
-    698, 784, 880, 1047,
-    880, 784, 698, 659
-  ];
-
-  // Bouncy Italian bass — root-fifth patterns
-  const bass = [
-    165, 0, 247, 0,  165, 0, 247, 165,
-    196, 0, 294, 0,  196, 0, 294, 196,
-    165, 0, 247, 0,  165, 0, 247, 165,
-    196, 0, 294, 0,  196, 175, 147, 0,
-    131, 0, 196, 0,  131, 0, 196, 131,
-    110, 0, 165, 0,  110, 0, 165, 110,
-    131, 0, 196, 0,  131, 196, 165, 0,
-    110, 0, 165, 0,  110, 131, 165, 0,
-    220, 0, 330, 0,  220, 0, 330, 220,
-    262, 0, 392, 0,  262, 0, 392, 262,
-    220, 0, 330, 0,  220, 0, 330, 220,
-    262, 0, 392, 0,  262, 233, 220, 0,
-    220, 196, 175, 165,  147, 131, 147, 165,
-    175, 196, 220, 262,  220, 196, 175, 165
-  ];
-
-  // Warm accordion-style chord pads
-  const pads = [
-    330, 0, 392, 0,  330, 0, 392, 330,
-    392, 0, 494, 0,  392, 0, 494, 392,
-    330, 0, 392, 0,  330, 0, 392, 330,
-    392, 0, 494, 0,  392, 349, 330, 0,
-    262, 0, 330, 0,  262, 0, 330, 262,
-    220, 0, 262, 0,  220, 0, 262, 220,
-    262, 0, 330, 0,  262, 330, 294, 0,
-    220, 0, 262, 0,  220, 262, 294, 0,
-    440, 0, 523, 0,  440, 0, 523, 440,
-    523, 0, 659, 0,  523, 0, 659, 523,
-    440, 0, 523, 0,  440, 0, 523, 440,
-    523, 0, 659, 0,  523, 466, 440, 0,
-    440, 392, 349, 330,  294, 262, 294, 330,
-    349, 392, 440, 523,  440, 392, 349, 330
-  ];
-
-  // Playful sparkle — mandolin-style twinkle
-  const sparkle = [
-    0, 0, 1319, 0,  0, 0, 0, 1319,
-    0, 0, 1568, 0,  0, 0, 1319, 0,
-    0, 0, 1319, 0,  0, 0, 0, 1319,
-    0, 0, 1568, 0,  1397, 0, 1175, 0,
-    0, 0, 1047, 0,  0, 0, 0, 1047,
-    0, 0, 880, 0,  0, 0, 0, 880,
-    0, 1047, 0, 0,  0, 1047, 0, 1175,
-    0, 880, 0, 0,  0, 880, 1047, 0,
-    0, 0, 1760, 0,  0, 0, 0, 1760,
-    0, 0, 2093, 0,  0, 0, 1760, 0,
-    0, 0, 1760, 0,  0, 0, 0, 1760,
-    0, 0, 2093, 0,  1865, 0, 1568, 0,
-    1760, 1568, 1397, 1319,  1175, 1047, 1175, 1319,
-    1397, 1568, 1760, 2093,  1760, 1568, 1397, 1319
-  ];
+  if (typeof level === 'undefined') level = 0;
+  var theme = getLevelTheme(level);
+  var b = 60 / theme.bpm;
+  var mel = theme.mel, bass = theme.bass, chords = theme.chords;
 
   function sched() {
     if (!musicOn) return;
-    const t = AC.currentTime + 0.05;
-    const len = mel.length;
+    var t = AC.currentTime + 0.05;
+    var len = mel.length;
 
-    for (let i = 0; i < len; i++) {
-      const tt = t + i * b;
+    for (var i = 0; i < len; i++) {
+      var tt = t + i * b;
 
-      // Lead — bright sine + triangle for Italian warmth
+      // Lead melody
       if (mel[i] > 0) {
-        ntSmooth(mel[i], 'sine', 0.06, tt, b * 0.8, 0);
-        ntSmooth(mel[i], 'triangle', 0.025, tt, b * 0.7, 6);
+        ntSmooth(mel[i], theme.lead, theme.leadVol, tt, b * 0.75, 0);
+        ntSmooth(mel[i], 'triangle', theme.leadVol * 0.5, tt, b * 0.6, 7);
       }
 
-      // Bouncy bass
+      // Bass
       if (i < bass.length && bass[i] > 0) {
-        ntSmooth(bass[i], 'sine', 0.08, tt, b * 0.5, 0);
+        ntSmooth(bass[i], 'sine', theme.bassVol, tt, b * 0.45, 0);
+        ntSmooth(bass[i], 'triangle', theme.bassVol * 0.3, tt, b * 0.35, 0);
       }
 
-      // Accordion pads
-      if (i < pads.length && pads[i] > 0) {
-        pad(pads[i], 0.016, tt, b * 0.85);
+      // Chord pads
+      if (i < chords.length && chords[i] > 0) {
+        pad(chords[i], theme.padVol, tt, b * 0.7);
+        ntSmooth(chords[i] * 1.5, 'sine', theme.padVol * 0.5, tt, b * 0.5, 0);
       }
 
-      // Mandolin sparkle
-      if (i < sparkle.length && sparkle[i] > 0) {
-        ntSmooth(sparkle[i], 'sine', 0.018, tt, b * 0.3, 0);
+      // Coin accent on phrase starts
+      if (i === 0 || i === 16 || i === 32 || i === 48) {
+        coinAccent(tt, 0.025);
       }
 
-      // Tarantella-style kick on beats
-      if (i % 4 === 0) {
-        const o = AC.createOscillator(), g = AC.createGain();
-        o.type = 'sine'; o.frequency.setValueAtTime(120, tt);
-        o.frequency.exponentialRampToValueAtTime(40, tt + 0.08);
-        g.gain.setValueAtTime(0.11, tt);
-        g.gain.exponentialRampToValueAtTime(0.001, tt + 0.15);
-        o.connect(g).connect(AC.destination); o.start(tt); o.stop(tt + 0.2);
+      // ===== DRUM PATTERNS PER STYLE =====
+      if (theme.drumStyle === 'mario') {
+        // Classic Mario — kick on 1, ghost on 3.5, snare on 2&4, steady hats
+        if (i % 4 === 0) drumKick(tt, 0.14);
+        if (i % 4 === 3) drumKick(tt, 0.06);
+        if (i % 4 === 2) drumSnare(tt, 0.03);
+        if (i % 2 === 0) drumHH(tt, 0.008, false);
+        if (i % 2 === 1) drumHH(tt, 0.005, true);
+        if (i % 8 === 0) { // woodblock
+          var wo = AC.createOscillator(), wg = AC.createGain();
+          wo.type = 'triangle'; wo.frequency.setValueAtTime(800, tt);
+          wo.frequency.exponentialRampToValueAtTime(600, tt + 0.02);
+          wg.gain.setValueAtTime(0.025, tt);
+          wg.gain.exponentialRampToValueAtTime(0.001, tt + 0.04);
+          wo.connect(wg).connect(AC.destination); wo.start(tt); wo.stop(tt + 0.05);
+        }
       }
-      // Playful tambourine snap on 2 & 4
-      if (i % 4 === 2) {
-        const o = AC.createOscillator(), g = AC.createGain();
-        o.type = 'sawtooth'; o.frequency.value = 2000 + Math.random() * 800;
-        g.gain.setValueAtTime(0.025, tt);
-        g.gain.exponentialRampToValueAtTime(0.001, tt + 0.04);
-        o.connect(g).connect(AC.destination); o.start(tt); o.stop(tt + 0.05);
-        const o2 = AC.createOscillator(), g2 = AC.createGain();
-        o2.type = 'square'; o2.frequency.value = 5000 + Math.random() * 2000;
-        g2.gain.setValueAtTime(0.01, tt + 0.003);
-        g2.gain.exponentialRampToValueAtTime(0.001, tt + 0.02);
-        o2.connect(g2).connect(AC.destination); o2.start(tt + 0.003); o2.stop(tt + 0.025);
+      else if (theme.drumStyle === 'arabian') {
+        // Doumbek-style: dum on 1, tek-tek pattern, finger cymbals
+        if (i % 8 === 0) drumConga(tt, 120, 0.12);
+        if (i % 8 === 3 || i % 8 === 5) drumConga(tt, 250, 0.07);
+        if (i % 8 === 6) drumConga(tt, 280, 0.05);
+        if (i % 4 === 0) drumTambourine(tt, 0.01);
+        if (i % 2 === 1) drumHH(tt, 0.004, true); // finger cymbal
       }
-      // Light hi-hat — airy feel
-      if (i % 2 === 0) {
-        const o = AC.createOscillator(), g = AC.createGain();
-        o.type = 'square'; o.frequency.value = 8000 + Math.random() * 3000;
-        g.gain.setValueAtTime(0.006, tt);
-        g.gain.exponentialRampToValueAtTime(0.001, tt + 0.015);
-        o.connect(g).connect(AC.destination); o.start(tt); o.stop(tt + 0.02);
+      else if (theme.drumStyle === 'gentle') {
+        // Soft brushes — just light hats and subtle kick
+        if (i % 8 === 0) drumKick(tt, 0.06);
+        if (i % 4 === 2) drumHH(tt, 0.005, true);
+        if (i % 2 === 0) drumHH(tt, 0.003, false);
+        if (i % 8 === 4) drumTambourine(tt, 0.005);
       }
-      // Off-beat shaker — breezy
-      if (i % 2 === 1) {
-        const o = AC.createOscillator(), g = AC.createGain();
-        o.type = 'sawtooth'; o.frequency.value = 11000 + Math.random() * 3000;
-        g.gain.setValueAtTime(0.004, tt);
-        g.gain.exponentialRampToValueAtTime(0.001, tt + 0.01);
-        o.connect(g).connect(AC.destination); o.start(tt); o.stop(tt + 0.013);
+      else if (theme.drumStyle === 'disco') {
+        // Four-on-floor, open hats on offbeats, claps on 2&4
+        if (i % 4 === 0) drumKick(tt, 0.13);
+        if (i % 4 === 2) drumClap(tt, 0.025);
+        if (i % 2 === 0) drumHH(tt, 0.008, false);
+        if (i % 2 === 1) drumHH(tt, 0.006, true);
+        if (i % 4 === 3) drumKick(tt, 0.04); // ghost kick
       }
-      // Bouncy ghost kick for Italian swing
-      if (i % 8 === 3 || i % 8 === 5) {
-        const o = AC.createOscillator(), g = AC.createGain();
-        o.type = 'sine'; o.frequency.setValueAtTime(85, tt);
-        o.frequency.exponentialRampToValueAtTime(38, tt + 0.05);
-        g.gain.setValueAtTime(0.04, tt);
-        g.gain.exponentialRampToValueAtTime(0.001, tt + 0.08);
-        o.connect(g).connect(AC.destination); o.start(tt); o.stop(tt + 0.1);
+      else if (theme.drumStyle === 'waltz') {
+        // 3/4 feel mapped to 4/4 — emphasis on 1, lighter on 2,3
+        if (i % 6 === 0) drumKick(tt, 0.1);
+        if (i % 6 === 2 || i % 6 === 4) drumHH(tt, 0.006, false);
+        if (i % 6 === 3) drumTambourine(tt, 0.008);
+        if (i % 12 === 0) drumConga(tt, 200, 0.04);
+      }
+      else if (theme.drumStyle === 'funk') {
+        // Syncopated kicks, ghost snares, busy hats
+        if (i % 4 === 0) drumKick(tt, 0.13);
+        if (i % 4 === 3) drumKick(tt, 0.08);
+        if (i % 4 === 2) drumSnare(tt, 0.03);
+        if (i % 8 === 5) drumSnare(tt, 0.015); // ghost snare
+        drumHH(tt, 0.006, i % 2 === 1);
+        if (i % 8 === 0) drumConga(tt, 300, 0.04);
+      }
+      else if (theme.drumStyle === 'electronic') {
+        // TR-808 style: punchy kick, clap snare, fast hats, sub hits
+        if (i % 4 === 0) drumKick(tt, 0.15);
+        if (i % 4 === 2) drumClap(tt, 0.03);
+        drumHH(tt, 0.005, false); // 16th note hats
+        if (i % 8 === 6) drumKick(tt, 0.07); // off-beat kick
+        if (i % 8 === 0) { // sub bass hit
+          var so = AC.createOscillator(), sg = AC.createGain();
+          so.type = 'sine'; so.frequency.setValueAtTime(55, tt);
+          sg.gain.setValueAtTime(0.08, tt);
+          sg.gain.exponentialRampToValueAtTime(0.001, tt + 0.2);
+          so.connect(sg).connect(AC.destination); so.start(tt); so.stop(tt + 0.25);
+        }
+      }
+      else if (theme.drumStyle === 'rock') {
+        // Driving rock — heavy kick, loud snare, crash on 1
+        if (i % 4 === 0) drumKick(tt, 0.16);
+        if (i % 4 === 2) drumSnare(tt, 0.04);
+        if (i % 2 === 0) drumHH(tt, 0.009, false);
+        if (i % 2 === 1) drumHH(tt, 0.007, true);
+        if (i % 16 === 0) { // crash cymbal
+          var cr = AC.createOscillator(), cg = AC.createGain();
+          cr.type = 'sawtooth'; cr.frequency.value = 5000 + Math.random() * 3000;
+          cg.gain.setValueAtTime(0.02, tt);
+          cg.gain.exponentialRampToValueAtTime(0.001, tt + 0.3);
+          cr.connect(cg).connect(AC.destination); cr.start(tt); cr.stop(tt + 0.35);
+        }
+      }
+      else if (theme.drumStyle === 'epic') {
+        // Cinematic — big toms, double kick, orchestral hits
+        if (i % 4 === 0) drumKick(tt, 0.16);
+        if (i % 4 === 1) drumKick(tt, 0.08); // double kick
+        if (i % 4 === 2) drumSnare(tt, 0.04);
+        if (i % 2 === 0) drumHH(tt, 0.008, false);
+        if (i % 8 === 0) drumConga(tt, 100, 0.1); // timpani feel
+        if (i % 16 === 0) drumClap(tt, 0.035); // big clap
+        if (i % 8 === 4) { // tom fill accent
+          drumConga(tt, 180, 0.06);
+          drumConga(tt + b * 0.5, 220, 0.05);
+        }
       }
     }
     musicTmr = setTimeout(sched, (len * b - 0.3) * 1000);
@@ -401,25 +617,26 @@ function playMusic() {
   sched();
 }
 function stopMusic() { musicOn = false; if (musicTmr) { clearTimeout(musicTmr); musicTmr = null; } }
+function switchMusic(level) { stopMusic(); playMusic(level); }
 
 // ===== SFX =====
 function sfxStar() { initAudio(); const t = AC.currentTime; [880,1175,1397,1760,2093].forEach((f,i) => nt(f,'sine',0.12,t+i*0.025,0.12)); nt(2637,'sine',0.04,t+0.1,0.2); }
-function sfxBird() { initAudio(); const t=AC.currentTime; const o=AC.createOscillator(),g=AC.createGain();o.type='sine'; o.frequency.setValueAtTime(1500,t);o.frequency.linearRampToValueAtTime(2200,t+.05);o.frequency.linearRampToValueAtTime(1600,t+.1);o.frequency.linearRampToValueAtTime(2400,t+.15); g.gain.setValueAtTime(.08,t);g.gain.exponentialRampToValueAtTime(.001,t+.25);o.connect(g).connect(AC.destination);o.start(t);o.stop(t+.3); }
-function sfxPlane() { initAudio(); const t=AC.currentTime; const o=AC.createOscillator(),g=AC.createGain();o.type='sawtooth';o.frequency.setValueAtTime(80,t);o.frequency.linearRampToValueAtTime(200,t+.2);o.frequency.linearRampToValueAtTime(60,t+.5);g.gain.setValueAtTime(.06,t);g.gain.exponentialRampToValueAtTime(.001,t+.5);o.connect(g).connect(AC.destination);o.start(t);o.stop(t+.55); nt(55,'square',.03,t,.4); }
-function sfxBalloon() { initAudio(); const t=AC.currentTime; const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.setValueAtTime(250,t);o.frequency.exponentialRampToValueAtTime(800,t+.04);o.frequency.exponentialRampToValueAtTime(200,t+.3);g.gain.setValueAtTime(.1,t);g.gain.exponentialRampToValueAtTime(.001,t+.35);o.connect(g).connect(AC.destination);o.start(t);o.stop(t+.4); }
+function sfxBird() { initAudio(); if(soundMuted)return; const t=AC.currentTime; const o=AC.createOscillator(),g=AC.createGain();o.type='sine'; o.frequency.setValueAtTime(1500,t);o.frequency.linearRampToValueAtTime(2200,t+.05);o.frequency.linearRampToValueAtTime(1600,t+.1);o.frequency.linearRampToValueAtTime(2400,t+.15); g.gain.setValueAtTime(.08,t);g.gain.exponentialRampToValueAtTime(.001,t+.25);o.connect(g).connect(AC.destination);o.start(t);o.stop(t+.3); }
+function sfxPlane() { initAudio(); if(soundMuted)return; const t=AC.currentTime; const o=AC.createOscillator(),g=AC.createGain();o.type='sawtooth';o.frequency.setValueAtTime(80,t);o.frequency.linearRampToValueAtTime(200,t+.2);o.frequency.linearRampToValueAtTime(60,t+.5);g.gain.setValueAtTime(.06,t);g.gain.exponentialRampToValueAtTime(.001,t+.5);o.connect(g).connect(AC.destination);o.start(t);o.stop(t+.55); nt(55,'square',.03,t,.4); }
+function sfxBalloon() { initAudio(); if(soundMuted)return; const t=AC.currentTime; const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.setValueAtTime(250,t);o.frequency.exponentialRampToValueAtTime(800,t+.04);o.frequency.exponentialRampToValueAtTime(200,t+.3);g.gain.setValueAtTime(.1,t);g.gain.exponentialRampToValueAtTime(.001,t+.35);o.connect(g).connect(AC.destination);o.start(t);o.stop(t+.4); }
 function sfxButterfly() { initAudio(); const t=AC.currentTime; [700,900,800,1000,850].forEach((f,i)=>nt(f,'sine',.04,t+i*.035,.05)); }
 function sfxHeli() { initAudio(); const t=AC.currentTime; for(let i=0;i<8;i++) nt(90,'square',.05,t+i*.05,.03); }
 function sfxCloud() { initAudio(); const t=AC.currentTime; nt(200,'sine',.06,t,.3); }
-function sfxRocket() { initAudio(); const t=AC.currentTime; const o=AC.createOscillator(),g=AC.createGain();o.type='sawtooth';o.frequency.setValueAtTime(100,t);o.frequency.exponentialRampToValueAtTime(800,t+.3);g.gain.setValueAtTime(.07,t);g.gain.exponentialRampToValueAtTime(.001,t+.4);o.connect(g).connect(AC.destination);o.start(t);o.stop(t+.45); }
-function sfxUfo() { initAudio(); const t=AC.currentTime; const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.setValueAtTime(400,t);o.frequency.linearRampToValueAtTime(800,t+.1);o.frequency.linearRampToValueAtTime(400,t+.2);o.frequency.linearRampToValueAtTime(800,t+.3);g.gain.setValueAtTime(.06,t);g.gain.exponentialRampToValueAtTime(.001,t+.35);o.connect(g).connect(AC.destination);o.start(t);o.stop(t+.4); }
+function sfxRocket() { initAudio(); if(soundMuted)return; const t=AC.currentTime; const o=AC.createOscillator(),g=AC.createGain();o.type='sawtooth';o.frequency.setValueAtTime(100,t);o.frequency.exponentialRampToValueAtTime(800,t+.3);g.gain.setValueAtTime(.07,t);g.gain.exponentialRampToValueAtTime(.001,t+.4);o.connect(g).connect(AC.destination);o.start(t);o.stop(t+.45); }
+function sfxUfo() { initAudio(); if(soundMuted)return; const t=AC.currentTime; const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.setValueAtTime(400,t);o.frequency.linearRampToValueAtTime(800,t+.1);o.frequency.linearRampToValueAtTime(400,t+.2);o.frequency.linearRampToValueAtTime(800,t+.3);g.gain.setValueAtTime(.06,t);g.gain.exponentialRampToValueAtTime(.001,t+.35);o.connect(g).connect(AC.destination);o.start(t);o.stop(t+.4); }
 function sfxWin() { initAudio(); const t=AC.currentTime; [523,659,784,1047,1319].forEach((f,i)=>{nt(f,'square',.08,t+i*.12,.3);nt(f*.5,'triangle',.05,t+i*.12,.25);}); }
 function sfxFail() { initAudio(); const t=AC.currentTime; [400,350,300,220,180].forEach((f,i)=>nt(f,'square',.07,t+i*.2,.3)); }
 function sfxTrophy() { initAudio(); const t=AC.currentTime; [523,659,784,659,784,880,1047,1319,1047,1319].forEach((f,i)=>{nt(f,'square',.08,t+i*.13,.25);nt(f*.5,'triangle',.04,t+i*.13,.2);}); }
 
-function sfxSmack() { initAudio(); const t=AC.currentTime; const o=AC.createOscillator(),g=AC.createGain();o.type='sawtooth';o.frequency.setValueAtTime(300,t);o.frequency.exponentialRampToValueAtTime(50,t+.15);g.gain.setValueAtTime(.15,t);g.gain.exponentialRampToValueAtTime(.001,t+.25);o.connect(g).connect(AC.destination);o.start(t);o.stop(t+.3); nt(80,'square',.1,t+.05,.15); nt(60,'triangle',.08,t+.1,.2); }
+function sfxSmack() { initAudio(); if(soundMuted)return; const t=AC.currentTime; const o=AC.createOscillator(),g=AC.createGain();o.type='sawtooth';o.frequency.setValueAtTime(300,t);o.frequency.exponentialRampToValueAtTime(50,t+.15);g.gain.setValueAtTime(.15,t);g.gain.exponentialRampToValueAtTime(.001,t+.25);o.connect(g).connect(AC.destination);o.start(t);o.stop(t+.3); nt(80,'square',.1,t+.05,.15); nt(60,'triangle',.08,t+.1,.2); }
 
 function sfxTornado() {
-  initAudio(); const t = AC.currentTime;
+  initAudio(); if(soundMuted)return; const t = AC.currentTime;
   // Whooshing wind — rising then falling pitch
   for (let i = 0; i < 20; i++) {
     const tt = t + i * 0.1;
@@ -454,7 +671,7 @@ function startTornado(callback) {
   tornadoCallback = callback;
   // Spawn debris particles for the tornado
   tornadoDebris = [];
-  var emojis = ['🌟','⭐','🪁','🐦','✈️','🎈','🦋','☁️','🍃','🌪️','💨','🌊','🏜️','🏖️','🏙️'];
+  var emojis = ['🌟','⭐','🪁','🐦','✈️','🎈','🦋','☁️','🍃','🌪️','💨','🌊','🏜️','🏖️','🏗️'];
   for (var i = 0; i < 40; i++) {
     tornadoDebris.push({
       angle: Math.random() * Math.PI * 2,
@@ -499,7 +716,7 @@ if (window.visualViewport) {
 let kiteSize = 'medium', kiteColor = '#FF1744', tailColor = '#2979FF';
 let stickerIds = [], windLvl = 'windy';
 let gameState = 'title'; // title, menu, playing, tornado
-let curLvl = 0, scores = [0, 0, 0, 0, 0, 0, 0];
+let curLvl = 0, scores = [0,0,0,0,0,0,0,0,0,0];
 let collected = 0, timeLeft = 30, timerRef = null;
 let kiteX = 0, kiteY = 0, targX = 0, targY = 0, touching = false, wT = 0;
 let stunned = 0; // time remaining in stun (kite falling to ground)
@@ -509,26 +726,29 @@ let titleT = 0, titleBgI = 0, titleBgF = 0;
 // Tornado transition state
 let tornadoT = 0, tornadoDur = 2.2, tornadoDebris = [], tornadoCallback = null;
 
-// LEVELS - Gradual difficulty: easy start, gets harder!
+// LEVELS - 10 iconic UAE landmarks, progressively harder!
 const LEVELS = [
-  { name: 'Burj Khalifa',     bg: 0, need: 3,  speed: 0.6, starRate: 0.05,  objRate: 0.003, drift: 0 },
-  { name: 'The Desert',       bg: 1, need: 5,  speed: 0.75, starRate: 0.045, objRate: 0.006, drift: 10 },
-  { name: 'The Beach',        bg: 2, need: 7,  speed: 0.9, starRate: 0.04,  objRate: 0.010, drift: 20 },
-  { name: 'Dubai Marina',     bg: 3, need: 10, speed: 1.1, starRate: 0.035, objRate: 0.016, drift: 35 },
-  { name: 'The Oasis',        bg: 4, need: 13, speed: 1.4, starRate: 0.032, objRate: 0.022, drift: 50 },
-  { name: 'Palm Jumeirah',    bg: 5, need: 16, speed: 1.7, starRate: 0.028, objRate: 0.028, drift: 60 },
-  { name: 'Sheikh Zayed Road', bg: 6, need: 20, speed: 2.2, starRate: 0.025, objRate: 0.035, drift: 80 }
+  { name: 'Burj Khalifa',         need: 6,  speed: 1.2, starRate: 0.035, objRate: 0.015, drift: 0 },
+  { name: 'Dubai Desert',         need: 8,  speed: 1.3, starRate: 0.032, objRate: 0.02,  drift: 20 },
+  { name: 'Sheikh Zayed Mosque',  need: 10, speed: 1.4, starRate: 0.03,  objRate: 0.022, drift: 35 },
+  { name: 'Dubai Marina',         need: 12, speed: 1.5, starRate: 0.028, objRate: 0.025, drift: 45 },
+  { name: 'Emirates Palace',      need: 13, speed: 1.6, starRate: 0.027, objRate: 0.028, drift: 55 },
+  { name: 'Louvre Abu Dhabi',     need: 15, speed: 1.7, starRate: 0.025, objRate: 0.03,  drift: 65 },
+  { name: 'Burj Al Arab',        need: 16, speed: 1.85,starRate: 0.024, objRate: 0.033, drift: 75 },
+  { name: 'Dubai Frame',         need: 18, speed: 2.0, starRate: 0.023, objRate: 0.035, drift: 85 },
+  { name: 'Emirates Towers',     need: 19, speed: 2.15,starRate: 0.022, objRate: 0.038, drift: 95 },
+  { name: 'Atlantis The Palm',   need: 22, speed: 2.3, starRate: 0.02,  objRate: 0.04,  drift: 110 }
 ];
 
 // Flying objects
 const FLYTYPE = [
   {e:'🐦',s:'bird',z:36},{e:'🦅',s:'eagle',z:42},{e:'🦜',s:'parrot',z:36},
-  {e:'✈️',s:'plane',z:46},{e:'🚁',s:'helicopter',z:44},
+  {e:'✈️',s:'plane',z:46},{e:'🪁',s:'helicopter',z:44},
   {e:'🦋',s:'butterfly',z:34},{e:'🐝',s:'bee',z:30},
   {e:'🎈',s:'balloon',z:38},{e:'🎈',s:'balloon',z:32},
   {e:'☁️',s:'cloud',z:50},{e:'🪂',s:'parachute',z:38},
   {e:'🛸',s:'ufo',z:40},{e:'🚀',s:'rocket',z:42},
-  {e:'🪁',s:'kite2',z:36},{e:'🎏',s:'kite2',z:34}
+  {e:'🪁',s:'kite2',z:36},{e:'🪁',s:'kite2',z:34}
 ];
 
 const STK = [
@@ -663,8 +883,8 @@ function goTitle() { showScr('s-title'); gameState = 'title'; }
 function goCustomize() { showScr('s-custom'); gameState = 'menu'; }
 
 function startGame() {
-  initAudio(); if (!musicOn) playMusic();
-  curLvl = 0; scores = [0, 0, 0, 0, 0, 0, 0];
+  initAudio(); if (!musicOn) playMusic(0);
+  curLvl = 0; scores = [0,0,0,0,0,0,0,0,0,0];
   showIntro();
 }
 
@@ -672,8 +892,7 @@ function showIntro() {
   const lv = LEVELS[curLvl];
   document.getElementById('intro-lvl').textContent = 'Level ' + (curLvl + 1);
   document.getElementById('intro-name').textContent = lv.name;
-  var lvlTime = Math.min(45, 25 + curLvl * 3);
-  document.getElementById('intro-goal').textContent = 'Catch ' + lv.need + ' ⭐ in ' + lvlTime + ' seconds!';
+  document.getElementById('intro-goal').textContent = 'Catch ' + lv.need + ' ⭐ in 30 seconds!';
   showScr('s-intro');
 }
 
@@ -687,7 +906,7 @@ function beginLevel() {
 
   // Full reset
   collected = 0;
-  timeLeft = Math.min(45, 25 + curLvl * 3); // more time for harder levels
+  timeLeft = 30;
   gameStars = [];
   flyObjs = [];
   particles = [];
@@ -733,11 +952,11 @@ function onWin() {
     sfxWin();
     document.getElementById('win-title').textContent = LEVELS[curLvl].name + ' Complete!';
     document.getElementById('win-score').textContent = '⏱ ' + timeLeft + ' seconds = ' + timeLeft + ' pts!';
-    document.getElementById('win-detail').textContent = 'Level ' + (curLvl + 1) + ' of ' + LEVELS.length;
+    document.getElementById('win-detail').textContent = 'Level ' + (curLvl + 1) + ' of 10';
 
     const btn = document.getElementById('win-btn');
     btn.onclick = null;
-    if (curLvl >= LEVELS.length - 1) {
+    if (curLvl >= 9) {
       btn.textContent = '🏆 See Trophy!';
       btn.onclick = showTrophyScr;
     } else {
@@ -745,6 +964,7 @@ function onWin() {
       btn.onclick = function() {
         curLvl++;
         console.log('>>> ADVANCE TO LEVEL ' + (curLvl + 1));
+        switchMusic(curLvl);
         showIntro();
       };
     }
@@ -765,8 +985,7 @@ function showTrophyScr() {
   sfxTrophy();
   const tot = scores.reduce((a, b) => a + b, 0);
   document.getElementById('trophy-total').textContent = 'Total Score: ' + tot + ' points!';
-  var detail = LEVELS.map(function(lv, i) { return lv.name + ': ' + scores[i]; }).join(' | ');
-  document.getElementById('trophy-detail').textContent = detail;
+  document.getElementById('trophy-detail').textContent = LEVELS.map(function(lv, i) { return lv.name + ': ' + scores[i]; }).join(' | ');
   showScr('s-trophy');
 }
 
@@ -867,23 +1086,13 @@ function drawStar(s, c) {
 }
 
 // ===== DRAW BACKGROUND =====
-// Per-level color tints to differentiate reused backgrounds
-var bgTints = [
-  'rgba(0,0,30,.1)',    // 0: Burj Khalifa — slight blue
-  'rgba(30,15,0,.1)',   // 1: Desert — warm
-  'rgba(0,20,30,.1)',   // 2: Beach — teal
-  'rgba(20,0,40,.15)',  // 3: Dubai Marina — purple dusk
-  'rgba(40,25,0,.15)',  // 4: Oasis — golden
-  'rgba(0,30,20,.12)',  // 5: Palm Jumeirah — tropical green
-  'rgba(10,0,20,.2)'    // 6: Sheikh Zayed — night purple
-];
 function drawBg(idx, c) {
   var bg = bgImgs[idx];
   if (bg && bg.complete && bg.naturalWidth) {
     var sc = Math.max(W / bg.naturalWidth, H / bg.naturalHeight);
     var iw = bg.naturalWidth * sc, ih = bg.naturalHeight * sc;
     c.drawImage(bg, (W - iw) / 2, (H - ih) / 2, iw, ih);
-    c.fillStyle = bgTints[idx] || 'rgba(0,0,30,.1)'; c.fillRect(0, 0, W, H);
+    c.fillStyle = 'rgba(0,0,30,.1)'; c.fillRect(0, 0, W, H);
   } else {
     var g = c.createLinearGradient(0, 0, 0, H);
     g.addColorStop(0, '#4FC3F7'); g.addColorStop(1, '#0277BD');
@@ -905,14 +1114,14 @@ function loop(ts) {
   if (gameState === 'title') {
     titleT += dt;
     titleBgF += dt * 0.15;
-    if (titleBgF >= 1) { titleBgF = 0; titleBgI = (titleBgI + 1) % bgImgs.length; }
+    if (titleBgF >= 1) { titleBgF = 0; titleBgI = (titleBgI + 1) % bgFiles.length; }
 
     // Draw current bg
     drawBg(titleBgI, ctx);
     // Crossfade
     if (titleBgF > 0.6) {
       ctx.globalAlpha = (titleBgF - 0.6) / 0.4;
-      drawBg((titleBgI + 1) % bgImgs.length, ctx);
+      drawBg((titleBgI + 1) % bgFiles.length, ctx);
       ctx.globalAlpha = 1;
     }
     // Dark overlay
@@ -953,8 +1162,8 @@ function loop(ts) {
   if (gameState === 'playing') {
     var lv = LEVELS[curLvl];
 
-    // BACKGROUND - use level bg index
-    drawBg(lv.bg !== undefined ? lv.bg : curLvl, ctx);
+    // BACKGROUND - directly index by curLvl (0=burj, 1=desert, 2=beach)
+    drawBg(curLvl, ctx);
 
     // Wind
     wT += dt;
@@ -973,7 +1182,7 @@ function loop(ts) {
     }
     var kd = kDims();
     kiteX = Math.max(kd.w, Math.min(W - kd.w, kiteX));
-    kiteY = Math.max(kd.h * 1.5, Math.min(H * 0.85, kiteY));
+    kiteY = Math.max(kd.h * 1.5, Math.min(H * 0.55, kiteY));
 
     // SPAWN STARS
     if (Math.random() < lv.starRate) {
@@ -994,7 +1203,7 @@ function loop(ts) {
       var left = Math.random() > 0.5;
       flyObjs.push({
         x: left ? -50 : W + 50,
-        y: 50 + Math.random() * (H * 0.6),
+        y: 30 + Math.random() * (H * 0.55),
         vx: (left ? 1 : -1) * (70 + Math.random() * 120),
         e: ft.e, s: ft.s,
         sz: ft.z + Math.random() * 10,
@@ -1062,7 +1271,7 @@ function loop(ts) {
           }
           // Knock kite to bottom of play area
           stunned = 0.8; // 0.8 seconds of falling/recovery
-          targY = H * 0.83; // send kite down near ground
+          targY = H * 0.53; // send kite down near ground
           // Lose 1 second!
           timeLeft = Math.max(1, timeLeft - 1);
           updHUD();
@@ -1074,7 +1283,7 @@ function loop(ts) {
       // While stunned, kite falls toward ground and player can't control it
       stunned -= dt;
       kiteY += 300 * dt; // fall speed
-      kiteY = Math.min(kiteY, H * 0.83);
+      kiteY = Math.min(kiteY, H * 0.53);
     }
 
     // Remove offscreen
@@ -1094,38 +1303,23 @@ function loop(ts) {
       ctx.translate(o.x, o.y + bobY);
       ctx.rotate(tilt);
 
-      // Large bright glow circle behind each object — highly visible!
-      var glowR = fsz * 1.0;
-      var glow = ctx.createRadialGradient(0, 0, glowR * 0.15, 0, 0, glowR);
-      glow.addColorStop(0, 'rgba(255,60,60,.5)');
-      glow.addColorStop(0.4, 'rgba(255,40,40,.3)');
-      glow.addColorStop(0.7, 'rgba(255,20,20,.15)');
+      // Colored glow circle behind each object
+      var glowR = fsz * 0.7;
+      var glow = ctx.createRadialGradient(0, 0, glowR * 0.2, 0, 0, glowR);
+      glow.addColorStop(0, 'rgba(255,100,100,.35)');
+      glow.addColorStop(0.6, 'rgba(255,50,50,.15)');
       glow.addColorStop(1, 'rgba(255,0,0,0)');
       ctx.fillStyle = glow;
       ctx.beginPath(); ctx.arc(0, 0, glowR, 0, Math.PI * 2); ctx.fill();
 
-      // Pulsing warning ring — thick and bright
-      var ringAlpha = 0.4 + Math.sin(o.wb * 3) * 0.25;
-      var ringR = glowR * (0.85 + Math.sin(o.wb * 3) * 0.15);
-      ctx.strokeStyle = 'rgba(255,50,50,' + ringAlpha + ')';
-      ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.arc(0, 0, ringR, 0, Math.PI * 2); ctx.stroke();
-
-      // Second outer warning ring
-      ctx.strokeStyle = 'rgba(255,100,100,' + (ringAlpha * 0.5) + ')';
+      // Warning ring that pulses
+      ctx.strokeStyle = 'rgba(255,80,80,' + (0.2 + Math.sin(o.wb * 3) * 0.15) + ')';
       ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(0, 0, ringR * 1.2, 0, Math.PI * 2); ctx.stroke();
-
-      // Danger triangle above the object
-      var triY = -fsz * 0.6;
-      ctx.font = 'bold ' + Math.round(fsz * 0.35) + 'px sans-serif';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillStyle = 'rgba(255,220,50,' + (0.6 + Math.sin(o.wb * 4) * 0.3) + ')';
-      ctx.fillText('⚠️', 0, triY);
+      ctx.beginPath(); ctx.arc(0, 0, glowR * (0.9 + Math.sin(o.wb * 3) * 0.15), 0, Math.PI * 2); ctx.stroke();
 
       // Shadow under emoji
-      ctx.shadowColor = 'rgba(0,0,0,.6)';
-      ctx.shadowBlur = 10;
+      ctx.shadowColor = 'rgba(0,0,0,.5)';
+      ctx.shadowBlur = 8;
       ctx.shadowOffsetX = 2;
       ctx.shadowOffsetY = 3;
 
@@ -1204,8 +1398,8 @@ function loop(ts) {
     var progress = Math.min(tornadoT / tornadoDur, 1);
 
     // Crossfade backgrounds: current level → next level (or dark if last)
-    var fromBg = LEVELS[curLvl].bg !== undefined ? LEVELS[curLvl].bg : curLvl;
-    var toBg = curLvl < LEVELS.length - 1 ? (LEVELS[curLvl + 1].bg !== undefined ? LEVELS[curLvl + 1].bg : curLvl + 1) : fromBg;
+    var fromBg = curLvl;
+    var toBg = curLvl < LEVELS.length - 1 ? curLvl + 1 : curLvl;
     drawBg(fromBg, ctx);
     if (fromBg !== toBg) {
       ctx.globalAlpha = progress;
@@ -1321,7 +1515,7 @@ goTitle();
 // iOS audio unlock — must happen on user gesture. Try multiple event types.
 function unlockAudio() {
   initAudio();
-  if (!musicOn) playMusic();
+  if (!musicOn) playMusic(curLvl);
   // Also create and immediately play a silent buffer to fully unlock on iOS
   if (AC && AC.state !== 'closed') {
     try {
@@ -1348,6 +1542,32 @@ document.addEventListener('touchmove', function(e) {
 }, { passive: false });
 
 console.log('Jude Kite Challenge v4 - iOS optimized');
+
+// ===== SOUND ON/OFF BUTTON =====
+(function() {
+  var btn = document.getElementById('sound-toggle');
+  function updateBtn() {
+    btn.textContent = soundMuted ? '🔇' : '🔊';
+    btn.setAttribute('aria-label', soundMuted ? 'Sound Off' : 'Sound On');
+  }
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    soundMuted = !soundMuted;
+    if (soundMuted) {
+      stopMusic();
+      if (AC) { AC.suspend().catch(function(){}); }
+    } else {
+      if (AC) { AC.resume().catch(function(){}); }
+      playMusic(curLvl);
+    }
+    updateBtn();
+  }, { passive: false });
+  btn.addEventListener('touchstart', function(e) {
+    e.stopPropagation();
+  }, { passive: false });
+  updateBtn();
+})();
 </script>
 </body>
 </html>
