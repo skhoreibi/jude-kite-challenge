@@ -180,17 +180,21 @@ const judeBig = new Image();
 judeBig.src = 'jude_title_big.png';
 
 const bgFiles = [
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Skyline-Dubai-2010.jpg/1280px-Skyline-Dubai-2010.jpg',
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Dubai_Desert.jpg/1280px-Dubai_Desert.jpg',
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Sheikh_Zayed_Masjid_in_Abu_Dhabi%2C_United_Arab_Emirates_-_panoramio_%281%29.jpg/1280px-Sheikh_Zayed_Masjid_in_Abu_Dhabi%2C_United_Arab_Emirates_-_panoramio_%281%29.jpg',
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Dubai_Marina_Skyline.jpg/1280px-Dubai_Marina_Skyline.jpg',
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Emirates_palace-abu_dhabi-2011_%286%29.JPG/1280px-Emirates_palace-abu_dhabi-2011_%286%29.JPG',
-  'https://upload.wikimedia.org/wikipedia/commons/c/c8/Louvre_Abu_Dhabi_entrance.jpg',
+  // Level 1: Burj Khalifa — full tower from base to tip, clear blue sky
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Burj_Khalifa.jpg/800px-Burj_Khalifa.jpg',
+  // Level 2: Arabian Desert — wide open sand dunes, clear foreground
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Wahiba_Sands_(Oman)_2015-4.jpg/1280px-Wahiba_Sands_(Oman)_2015-4.jpg',
+  // Level 3: Dubai Beach — Jumeirah beach with open sea and sky
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Jumeirah_beach_and_the_Burj_Al_Arab.jpg/1280px-Jumeirah_beach_and_the_Burj_Al_Arab.jpg',
+  // Title screen rotation: additional Dubai/UAE landmarks
   'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Burj_Al_Arab%2C_Dubai.jpg/1280px-Burj_Al_Arab%2C_Dubai.jpg',
   'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/190410_Dubai_Frame.jpg/1280px-190410_Dubai_Frame.jpg',
   'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Emirates_Towers_in_Dubai_at_dawn.jpg/1280px-Emirates_Towers_in_Dubai_at_dawn.jpg',
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Atlantis%2C_The_Palm_from_Le_Royal_M%C3%A9ridien_Beach_Resort_and_Spa_in_Dubai_2.jpg/1280px-Atlantis%2C_The_Palm_from_Le_Royal_M%C3%A9ridien_Beach_Resort_and_Spa_in_Dubai_2.jpg'
-];
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Dubai_Marina_Skyline.jpg/1280px-Dubai_Marina_Skyline.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Atlantis%2C_The_Palm_from_Le_Royal_M%C3%A9ridien_Beach_Resort_and_Spa_in_Dubai_2.jpg/1280px-Atlantis%2C_The_Palm_from_Le_Royal_M%C3%A9ridien_Beach_Resort_and_Spa_in_Dubai_2.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Skyline-Dubai-2010.jpg/1280px-Skyline-Dubai-2010.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Burj_Khalifa.jpg/800px-Burj_Khalifa.jpg'
+]
 const bgImgs = [];
 bgFiles.forEach((f, i) => {
   bgImgs[i] = new Image();
@@ -1234,7 +1238,7 @@ function loop(ts) {
     }
     var kd = kDims();
     kiteX = Math.max(kd.w, Math.min(W - kd.w, kiteX));
-    kiteY = Math.max(kd.h * 1.5, Math.min(H * 0.55, kiteY));
+    kiteY = Math.max(kd.h * 1.5, Math.min(H * 0.78, kiteY));
 
     // SPAWN STARS
     if (Math.random() < lv.starRate) {
@@ -1335,7 +1339,7 @@ function loop(ts) {
       // While stunned, kite falls toward ground and player can't control it
       stunned -= dt;
       kiteY += 300 * dt; // fall speed
-      kiteY = Math.min(kiteY, H * 0.53);
+      kiteY = Math.min(kiteY, H * 0.76);
     }
 
     // Remove offscreen
